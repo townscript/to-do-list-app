@@ -1,4 +1,4 @@
-package main.java.com.model;
+package main.java.com.townscript.todo.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

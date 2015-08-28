@@ -1,4 +1,4 @@
-package main.java.com.model;
+package main.java.com.townscript.todo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,15 +10,14 @@ import org.hibernate.annotations.Proxy;
 
 @Proxy(lazy=false)
 @Entity
-@Table(name = "CATEGORIES")
-
-public class Category {
+@Table(name = "TAGS")
+public class Tag {
 	@Id @GeneratedValue
 	@Column(name = "ID")
 	private int id;
 	
-	@Column(name = "CATEGORY_NAME")
-	private String categoryName;
+	@Column(name = "TAG_NAME")
+	private String tagName;
 
 	public int getId() {
 		return id;
@@ -28,11 +27,14 @@ public class Category {
 		this.id = id;
 	}
 
-	public String getCategoryName() {
-		return categoryName;
+	public String getTagName() {
+		return tagName;
 	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
+
+	
+
 }
