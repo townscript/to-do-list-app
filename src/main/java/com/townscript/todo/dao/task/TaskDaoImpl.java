@@ -59,15 +59,6 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public void addDefaultTasks() {
-		Task defaultTask1 = new Task();
-		Task defaultTask2 = new Task();
-		defaultTask1.setTaskName("Buy groceries today");
-		defaultTask2.setTaskName("Write code tomorrow");
-		
-	}
-
-	@Override
 	public String getTagsList(int taskid) {
 		String sql = "SELECT TAGIDS FROM TASKS " + "WHERE ID = "+ taskid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
@@ -106,6 +97,16 @@ public class TaskDaoImpl implements TaskDao {
 		int[] types = {Types.BOOLEAN,Types.INTEGER,Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql,params,types);
+	}
+
+	@Override
+	public void updateTaskName(int taskid, String newTaskName) {
+		String sql = "UPDATE TASKS SET TASK_NAME = ? where ID = ?";
+		Object[] params = {newTaskName,taskid};
+		int[] types = {Types.VARCHAR,Types.INTEGER};
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		jdbcTemplate.update(sql,params,types);
+		
 	}
 
 }

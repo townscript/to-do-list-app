@@ -61,13 +61,12 @@ public class CategoryDaoImpl implements CategoryDao{
 	}
 
 	@Override
-	public void addDefaultCategories() {
-		Category defaultCategory1 = new Category();
-		Category defaultCategory2 = new Category();
-		defaultCategory1.setCategoryName("Work");
-		defaultCategory2.setCategoryName("Personal");
-		addCategory(defaultCategory1);
-		addCategory(defaultCategory2);
+	public void updateCategoryName(int categoryid, String newCategoryName) {
+		String sql = "UPDATE CATEGORIES SET TAG_NAME = ? where ID = ?";
+		Object[] params = {newCategoryName,categoryid};
+		int[] types = {Types.VARCHAR,Types.INTEGER};
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		jdbcTemplate.update(sql,params,types);
 	}
 
 }

@@ -6,5 +6,5 @@ public interface TagDao {
 public int addTag(Tag tag);
 public void removeTag(int tagid);
 public Tag readTag(int tagid);
-public void addDefaultTags();
+public void updateTagName(int tagid,String newTagName);
 }

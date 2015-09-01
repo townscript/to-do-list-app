@@ -61,19 +61,13 @@ public class TagDaoImpl implements TagDao{
 	}
 
 	@Override
-	public void addDefaultTags() {
-		Tag defaulttag1 = new Tag();
-		Tag defaulttag2 = new Tag();
-		Tag defaulttag3 = new Tag();
-		Tag defaulttag4 = new Tag();
-		defaulttag1.setTagName("office");
-		defaulttag2.setTagName("home");
-		defaulttag3.setTagName("movie");
-		defaulttag4.setTagName("project");
-		addTag(defaulttag1);
-		addTag(defaulttag2);
-		addTag(defaulttag3);
-		addTag(defaulttag4);
+	public void updateTagName(int tagid, String newTagName) {
+		String sql = "UPDATE TAGS SET TAG_NAME = ? where ID = ?";
+		Object[] params = {newTagName,tagid};
+		int[] types = {Types.VARCHAR,Types.INTEGER};
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		jdbcTemplate.update(sql,params,types);
+		
 	}
 
 }

@@ -53,9 +53,9 @@ public class UserDaoImpl implements UserDao {
 		
 	}
 	@Override
-	public boolean isAuthenticUser(String userEmail, String userPassword) {
+	public boolean isAuthenticUser(String username, String password) {
 		String sql = "SELECT * FROM USER " +
-				"WHERE USERNAME = '"+ userEmail+"' AND PASSWORD = '"+ userPassword + "'";
+				"WHERE USERNAME = '"+ username+"' AND PASSWORD = '"+ password + "'";
 		 
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 
@@ -82,6 +82,24 @@ public class UserDaoImpl implements UserDao {
 		else{
 			return usersList.get(0);
 		}
+	}
+
+	@Override
+	public boolean checkUserExist(String username) {
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		
+		String sql = "SELECT * FROM USER WHERE USERNAME = "+username;
+		List<User> usersList;
+		try {
+			usersList = jdbcTemplate.query(sql, new UserRowMapper());
+		} 
+		catch (Exception e) {
+			return false;
+		}
+		if(usersList == null || usersList.isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 
 
