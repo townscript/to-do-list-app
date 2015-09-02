@@ -19,7 +19,7 @@ public class TaskDaoImpl implements TaskDao {
 
 	@Override
 	public int addTask(Task task) {
-		final String sql = "INSERT INTO TASKS(ID,TAG_NAME,USER_ID,TAGIDS,CATEGORY_ID,MARK,SUBTASK,PARENT_ID,SEQUENCE_NUMBER) VALUES (" + task.getId()+ "', '"+task.getTaskName()+ "', '"+task.getUserid()+ "', '"+task.getagids()+ "', '"+task.getCategoryid()+ "', '"+task.isMark()+ "', '"+task.isSubtask()+ "', '"+task.getParentid()+ "', '"+task.getSequenceNumber()+"')";
+		final String sql = "INSERT INTO TASKS(ID,TAG_NAME,USER_ID,MARK,SUBTASK,PARENT_ID,SEQUENCE_NUMBER) VALUES (" + task.getId()+ "', '"+task.getTaskName()+ "', '"+task.getUserid()+  "', '"+task.isMark()+ "', '"+task.isSubtask()+ "', '"+task.getParentid()+ "', '"+task.getSequenceNumber()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -33,23 +33,10 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public void markTaskDone(int taskid) {
-		String sql = "UPDATE TASKS SET MARK = ? where ID = ?";
-		Object[] params = {1,taskid};
-		int[] types = {Types.BOOLEAN,Types.INTEGER};
-		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
-	}
-
-	@Override
 	public Task readTask(int taskid) {
-		String sql = "SELECT * FROM TASKS " +
-				"WHERE ID = "+ taskid;
-	 
+		String sql = "SELECT * FROM TASKS " + "WHERE ID = "+ taskid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-	 
 		List<Task> taskList = jdbcTemplate.query(sql, new TaskRowMapper());
-		
 		if(taskList == null || taskList.isEmpty()){
 			return null;
 		}
@@ -59,54 +46,35 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public String getTagsList(int taskid) {
-		String sql = "SELECT TAGIDS FROM TASKS " + "WHERE ID = "+ taskid;
+	public void updateTask(Task task) {
+		String sql = "UPDATE TASKS SET TASK_NAME = ?,USER_ID = ?,MARK = ?,SUBTASK = ?,PARENT_ID = ?,SEQUENCE_NUMBER = ?  where ID = ?";
+		Object[] params = {task.getTaskName(),task.getUserid(),task.isMark(),task.isSubtask(),task.getParentid(),task.getSequenceNumber(),task.getId()};
+		int[] types = {Types.VARCHAR,Types.INTEGER,Types.VARCHAR,Types.INTEGER,Types.BOOLEAN,Types.BOOLEAN,Types.INTEGER,Types.INTEGER,Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-	 
-		String tagList = jdbcTemplate.queryForObject(sql, String.class);
-		if(tagList == null || tagList.isEmpty()){
+		jdbcTemplate.update(sql,params,types);
+		
+	}
+
+	@Override
+	public void removeTask(int taskid) {
+		String sql = "delete TASKS where ID = ?";
+		Object[] params = {taskid};
+		int[] types = {Types.INTEGER};
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		jdbcTemplate.update(sql,params,types);
+	}
+
+	@Override
+	public List<Task> readTasksofUsers(int userid) {
+		String sql = "SELECT * FROM TASKS " + "WHERE USER_ID = "+ userid;
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		List<Task> taskList = jdbcTemplate.query(sql, new TaskRowMapper());
+		if(taskList == null || taskList.isEmpty()){
 			return null;
 		}
 		else{
-			return tagList;
+			return taskList;
 		}
-	}
-
-	@Override
-	public int getCategory(int taskid) {
-		String sql = "SELECT CATEGORY_ID FROM TASKS " + "WHERE ID = "+ taskid;
-		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		int categoryid = jdbcTemplate.queryForObject(sql,Integer.class);
-		return categoryid;
-	}
-
-	@Override
-	public void makeSubtaskTask(int taskid) {
-		String sql = "UPDATE TASKS SET SUBTASK = ?, PARENT_ID = ?  where ID = ?";
-		Object[] params = {1,-1,taskid};
-		int[] types = {Types.BOOLEAN,Types.INTEGER,Types.INTEGER};
-		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
-		
-	}
-
-	@Override
-	public void makeTaskSubtask(int taskid, int parentid) {
-		String sql = "UPDATE TASKS SET SUBTASK = ?, PARENT_ID = ?  where ID = ?";
-		Object[] params = {0,parentid,taskid};
-		int[] types = {Types.BOOLEAN,Types.INTEGER,Types.INTEGER};
-		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
-	}
-
-	@Override
-	public void updateTaskName(int taskid, String newTaskName) {
-		String sql = "UPDATE TASKS SET TASK_NAME = ? where ID = ?";
-		Object[] params = {newTaskName,taskid};
-		int[] types = {Types.VARCHAR,Types.INTEGER};
-		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
-		
 	}
 
 }

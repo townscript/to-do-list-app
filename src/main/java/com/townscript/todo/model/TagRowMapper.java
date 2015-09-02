@@ -11,6 +11,7 @@ public class TagRowMapper implements RowMapper<Tag>{
 		Tag alltags = new Tag();
 		alltags.setId(rs.getInt("ID"));
 		alltags.setTagName(rs.getString("TAG_NAME"));
+		alltags.setTaskids(rs.getString("TASKIDS"));
 		
 		return alltags;
 	}

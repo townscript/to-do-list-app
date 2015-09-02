@@ -19,6 +19,9 @@ public class Category {
 	
 	@Column(name = "CATEGORY_NAME")
 	private String categoryName;
+	
+	@Column(name = "TASKIDS")
+	private String taskids;
 
 	public int getId() {
 		return id;
@@ -34,5 +37,13 @@ public class Category {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	public String getTaskids() {
+		return taskids;
+	}
+
+	public void setTaskids(String taskids) {
+		this.taskids = taskids;
 	}
 }

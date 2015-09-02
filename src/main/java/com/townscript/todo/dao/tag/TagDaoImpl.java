@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
@@ -20,7 +21,7 @@ public class TagDaoImpl implements TagDao{
 
 	@Override
 	public int addTag(Tag tag) {
-		final String sql = "insert into TAGS(ID,TAG_NAME) VALUES (" + tag.getId()+ "', '"+tag.getTagName()+"')";
+		final String sql = "insert into TAGS(ID,TAG_NAME,TASKIDS) VALUES (" + tag.getId()+ "', '"+tag.getTagName()+ "', '"+tag.getTaskids()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -31,7 +32,6 @@ public class TagDaoImpl implements TagDao{
 			  }, keyHolder);
 
 		return keyHolder.getKey().intValue();
-		
 	}
 
 	@Override
@@ -61,13 +61,28 @@ public class TagDaoImpl implements TagDao{
 	}
 
 	@Override
-	public void updateTagName(int tagid, String newTagName) {
-		String sql = "UPDATE TAGS SET TAG_NAME = ? where ID = ?";
-		Object[] params = {newTagName,tagid};
-		int[] types = {Types.VARCHAR,Types.INTEGER};
+	public void updateTag(Tag tag) {
+		String sql = "UPDATE TAGS SET TAG_NAME = ?, TASKIDS = ? " + "WHERE ID = ?" ;
+		Object[] params = { tag.getTagName(), tag.getTaskids(), tag.getId() };
+		int[] types = {Types.VARCHAR, Types.VARCHAR, Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
+		jdbcTemplate.update(sql, params, types);
+	}
+
+	@Override
+	public List<Tag> getTagsofTask(int taskid) {
+		List<Tag> tagsList = new ArrayList<Tag>();
+		String sql = "SELECT * FROM TAGS " + "WHERE TASKIDS LIKE '%"+taskid+"%' ";
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+	 
+		tagsList = jdbcTemplate.query(sql, new TagRowMapper());
 		
+		if(tagsList == null || tagsList.isEmpty()){
+			return null;
+		}
+		else{
+			return tagsList;
+		}
 	}
 
 }

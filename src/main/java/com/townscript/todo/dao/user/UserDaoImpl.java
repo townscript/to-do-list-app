@@ -44,10 +44,10 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void updatePassword(int userid, String password) {
-		String sql = "update USER set PASSWORD = ? where ID = ?";
-		Object[] params = {password,userid};
-		int[] types = {Types.INTEGER};
+	public void updateUser(User user) {
+		String sql = "update USER set USERNAME = ?,PASSWORD = ?,FIRSTNAME = ?,LASTNAME = ? where ID = ?";
+		Object[] params = {user.getUsername(),user.getPassword(),user.getFirstname(),user.getLastname(),user.getId()};
+		int[] types = {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql,params,types);
 		

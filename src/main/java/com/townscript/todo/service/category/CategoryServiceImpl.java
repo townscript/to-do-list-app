@@ -24,17 +24,17 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public void addDefaultCategories() {
-		Category defaultCategory1 = new Category();
-		Category defaultCategory2 = new Category();
-		defaultCategory1.setCategoryName("Work");
-		defaultCategory2.setCategoryName("Personal");
-		categoryDao.addCategory(defaultCategory1);
-		categoryDao.addCategory(defaultCategory2);
+	public void changeCategoryName(int categoryid, String newCategoryName) {
+		Category category = categoryDao.readCategory(categoryid);
+		category.setCategoryName(newCategoryName);
+		categoryDao.updateCategory(category);
 	}
 
 	@Override
-	public void changeCategoryName(int categoryid, String newCategoryName) {
-		categoryDao.updateCategoryName(categoryid, newCategoryName);
+	public void addExistingCategorytoTask(Category category, int taskid) {
+		String taskids = category.getTaskids();
+		String taskidString = Integer.toString(taskid);
+		taskids = taskids.concat(", "+taskidString); //updating taskids of category
+		categoryDao.updateCategory(category);
 	}
 }

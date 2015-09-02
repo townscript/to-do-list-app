@@ -17,9 +17,6 @@ public class Task {
 	
 	@Column(name = "TASK_NAME")
 	private String taskName;
-
-	@Column(name = "TAGIDS")
-	private String tagids;
 	
 	@Column(name = "SUBTASK")
 	private boolean subtask;
@@ -33,9 +30,6 @@ public class Task {
 	@Column(name = "USER_ID")
 	private int userid;
 	
-	@Column(name = "CATEGORY_ID")
-	private int categoryid;
-
 	@Column(name = "SEQUENCE_NUMBER")
 	private int sequenceNumber;
 	
@@ -53,14 +47,6 @@ public class Task {
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
-	}
-
-	public String getagids() {
-		return tagids;
-	}
-
-	public void setTagids(String tagids) {
-		this.tagids = tagids;
 	}
 
 	public boolean isSubtask() {
@@ -95,14 +81,6 @@ public class Task {
 		this.userid = userid;
 	}
 
-	public int getCategoryid() {
-		return categoryid;
-	}
-
-	public void setCategoryid(int categoryid) {
-		this.categoryid = categoryid;
-	}
-	
 	public int getSequenceNumber() {
 		return sequenceNumber;
 	}

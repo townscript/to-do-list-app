@@ -6,5 +6,6 @@ public interface CategoryDao {
 	public int addCategory(Category category);
 	public void removeCategory(int categoryid);
 	public Category readCategory(int categoryid);
-	public void updateCategoryName(int categoryid,String newCategoryName);
+	public void updateCategory(Category category);
+	public Category getCategoryofTask(int taskid);
 }

@@ -11,12 +11,10 @@ public class TaskRowMapper implements RowMapper<Task>{
 		Task alltasks = new Task();
 		alltasks.setId(rs.getInt("ID"));
 		alltasks.setTaskName(rs.getString("TASK_NAME"));
-		alltasks.setTagids(rs.getString("TAGIDS"));
 		alltasks.setSubtask(rs.getBoolean("SUBTASK"));
 		alltasks.setMark(rs.getBoolean("MARK"));
 		alltasks.setParentid(rs.getInt("PARENT_ID"));
 		alltasks.setUserid(rs.getInt("USER_ID"));
-		alltasks.setCategoryid(rs.getInt("CATEGORY_ID"));
 		alltasks.setSequenceNumber(rs.getInt("SEQUENCE_NUMBER"));
 		
 		return alltasks;

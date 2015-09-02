@@ -24,24 +24,19 @@ public class TagServiceImpl implements TagService{
 	}
 
 	@Override
-	public void addDefaultTags() {
-		Tag defaulttag1 = new Tag();
-		Tag defaulttag2 = new Tag();
-		Tag defaulttag3 = new Tag();
-		Tag defaulttag4 = new Tag();
-		defaulttag1.setTagName("office");
-		defaulttag2.setTagName("home");
-		defaulttag3.setTagName("movie");
-		defaulttag4.setTagName("project");
-		tagDao.addTag(defaulttag1);
-		tagDao.addTag(defaulttag2);
-		tagDao.addTag(defaulttag3);
-		tagDao.addTag(defaulttag4);
+	public void changeTagName(int tagid, String newTagName) {
+		Tag tag = tagDao.readTag(tagid);
+		tag.setTagName(newTagName);
+		tagDao.updateTag(tag);
+		
 	}
 
 	@Override
-	public void changeTagName(int tagid, String newTagName) {
-		tagDao.updateTagName(tagid, newTagName);
+	public void addExistingTagtoTask(Tag tag, int taskid) {
+		String taskids = tag.getTaskids();
+		String taskidString = Integer.toString(taskid);
+		taskids = taskids.concat(", "+taskidString); //updating taskids of tag
+		tagDao.updateTag(tag);
 		
 	}
 

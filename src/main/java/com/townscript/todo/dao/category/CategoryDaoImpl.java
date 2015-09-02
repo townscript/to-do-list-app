@@ -20,7 +20,7 @@ public class CategoryDaoImpl implements CategoryDao{
 
 	@Override
 	public int addCategory(Category category) {
-		final String sql = "insert into CATEGORIES(ID,CATEGORY_NAME) VALUES (" + category.getId()+ "', '"+category.getCategoryName()+"')";
+		final String sql = "insert into CATEGORIES(ID,CATEGORY_NAME,TASKIDS) VALUES (" + category.getId()+ "', '"+category.getCategoryName()+ "', '"+category.getTaskids()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -45,13 +45,9 @@ public class CategoryDaoImpl implements CategoryDao{
 
 	@Override
 	public Category readCategory(int categoryid) {
-		String sql = "SELECT * FROM CATEGORIES " +
-				"WHERE ID = "+ categoryid;
-	 
+		String sql = "SELECT * FROM CATEGORIES " + "WHERE ID = "+ categoryid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-	 
 		List<Category> categoryList = jdbcTemplate.query(sql, new CategoryRowMapper());
-		
 		if(categoryList == null || categoryList.isEmpty()){
 			return null;
 		}
@@ -61,12 +57,27 @@ public class CategoryDaoImpl implements CategoryDao{
 	}
 
 	@Override
-	public void updateCategoryName(int categoryid, String newCategoryName) {
-		String sql = "UPDATE CATEGORIES SET TAG_NAME = ? where ID = ?";
-		Object[] params = {newCategoryName,categoryid};
-		int[] types = {Types.VARCHAR,Types.INTEGER};
+	public void updateCategory(Category category) {
+		String sql = "UPDATE CATEGORIES SET CATEGORY_NAME = ?, TASKIDS = ? " + "WHERE ID = ?" ;
+		Object[] params = { category.getCategoryName(), category.getTaskids(), category.getId() };
+		int[] types = {Types.VARCHAR, Types.VARCHAR, Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
+		jdbcTemplate.update(sql, params, types);
+	}
+
+	@Override
+	public Category getCategoryofTask(int taskid) {
+		String sql = "SELECT * FROM CATEGORIES " + "WHERE TASKIDS LIKE '%"+taskid+"%' ";
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+	 
+		Category category = jdbcTemplate.queryForObject(sql, Category.class);
+		
+		if(category == null){
+			return null;
+		}
+		else{
+			return category;
+		}
 	}
 
 }

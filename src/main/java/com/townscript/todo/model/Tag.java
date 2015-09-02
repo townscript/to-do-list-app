@@ -18,6 +18,9 @@ public class Tag {
 	
 	@Column(name = "TAG_NAME")
 	private String tagName;
+	
+	@Column(name = "TASKIDS")
+	private String taskids;
 
 	public int getId() {
 		return id;
@@ -33,6 +36,14 @@ public class Tag {
 
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
+	}
+
+	public String getTaskids() {
+		return taskids;
+	}
+
+	public void setTaskids(String taskids) {
+		this.taskids = taskids;
 	}
 
 	
