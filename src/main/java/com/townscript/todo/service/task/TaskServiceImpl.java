@@ -40,7 +40,7 @@ public class TaskServiceImpl implements TaskService{
 	@Override
 	public void makeSubtaskTask(int taskid) {
 		Task task = taskDao.readTask(taskid);
-		task.setSubtask(true);
+		task.setSubtask(false);
 		task.setParentid(-1);
 		taskDao.updateTask(task);
 	}
@@ -49,6 +49,7 @@ public class TaskServiceImpl implements TaskService{
 	public void makeTaskSubtask(int taskid, int parentid,int sequenceNumber) {
 		Task task = taskDao.readTask(taskid);
 		task.setParentid(parentid);
+		task.setSubtask(true);
 		task.setSequenceNumber(sequenceNumber);
 		taskDao.updateTask(task);
 	}
@@ -79,6 +80,7 @@ public class TaskServiceImpl implements TaskService{
 		//fetch tags of the task being removed
 		List<Tag> tagsList = tagDao.getTagsofTask(taskid);
 		String taskidString = Integer.toString(taskid);
+		if(tagsList!=null){
 		for(Tag tag : tagsList){
 			String taskids = tag.getTaskids();
 			//remove tag if it is associated only with the task being removed
@@ -95,7 +97,9 @@ public class TaskServiceImpl implements TaskService{
 				tagDao.updateTag(tag);
 			}
 		}
+		}
 		Category category = categoryDao.getCategoryofTask(taskid); //fetch category of the task being removed
+		if(category!=null){
 		String taskids = category.getTaskids();
 		if(taskidString == taskids){ //remove category if it is associated only with the task being removed
 			tagDao.removeTag(category.getId());
@@ -109,6 +113,6 @@ public class TaskServiceImpl implements TaskService{
 			category.setTaskids(newTaskids);
 			categoryDao.updateCategory(category);
 		}
+		}
 	}
-
 }

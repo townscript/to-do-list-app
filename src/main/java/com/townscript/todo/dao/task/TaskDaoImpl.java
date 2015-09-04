@@ -19,7 +19,7 @@ public class TaskDaoImpl implements TaskDao {
 
 	@Override
 	public int addTask(Task task) {
-		final String sql = "INSERT INTO TASKS(ID,TAG_NAME,USER_ID,MARK,SUBTASK,PARENT_ID,SEQUENCE_NUMBER) VALUES (" + task.getId()+ "', '"+task.getTaskName()+ "', '"+task.getUserid()+  "', '"+task.isMark()+ "', '"+task.isSubtask()+ "', '"+task.getParentid()+ "', '"+task.getSequenceNumber()+"')";
+		final String sql = "INSERT INTO TASKS(ID,TASK_NAME,USER_ID,MARK,SUBTASK,PARENT_ID,SEQUENCE_NUMBER) VALUES (" + task.getId()+ ", '"+task.getTaskName()+ "', "+task.getUserid()+  ", "+task.isMark()+ ", "+task.isSubtask()+ ", "+task.getParentid()+ ", "+task.getSequenceNumber()+")";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -49,7 +49,7 @@ public class TaskDaoImpl implements TaskDao {
 	public void updateTask(Task task) {
 		String sql = "UPDATE TASKS SET TASK_NAME = ?,USER_ID = ?,MARK = ?,SUBTASK = ?,PARENT_ID = ?,SEQUENCE_NUMBER = ?  where ID = ?";
 		Object[] params = {task.getTaskName(),task.getUserid(),task.isMark(),task.isSubtask(),task.getParentid(),task.getSequenceNumber(),task.getId()};
-		int[] types = {Types.VARCHAR,Types.INTEGER,Types.VARCHAR,Types.INTEGER,Types.BOOLEAN,Types.BOOLEAN,Types.INTEGER,Types.INTEGER,Types.INTEGER};
+		int[] types = {Types.VARCHAR,Types.INTEGER,Types.BOOLEAN,Types.BOOLEAN,Types.INTEGER,Types.INTEGER,Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql,params,types);
 		
@@ -57,11 +57,9 @@ public class TaskDaoImpl implements TaskDao {
 
 	@Override
 	public void removeTask(int taskid) {
-		String sql = "delete TASKS where ID = ?";
-		Object[] params = {taskid};
-		int[] types = {Types.INTEGER};
+		String sql = "delete from TASKS where ID = "+taskid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
+		jdbcTemplate.update(sql);
 	}
 
 	@Override

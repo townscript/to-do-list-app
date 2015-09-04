@@ -1,7 +1,7 @@
 package main.java.com.townscript.todo.service.user;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import main.java.com.townscript.todo.model.Category;
 import main.java.com.townscript.todo.model.Tag;
@@ -15,6 +15,6 @@ public interface UserService {
 	public User getUserInfo(int userid);
 	public void deleteUser(int userid);
 	public List<Task> loadTasks(int userid);
-	public HashSet<Tag> loadTags(int userid);
-	public HashSet<Category> loadCategories(int userid);
+	public TreeSet<Tag> loadTags(int userid);
+	public TreeSet<Category> loadCategories(int userid);
 }

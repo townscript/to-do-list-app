@@ -20,7 +20,7 @@ public class CategoryDaoImpl implements CategoryDao{
 
 	@Override
 	public int addCategory(Category category) {
-		final String sql = "insert into CATEGORIES(ID,CATEGORY_NAME,TASKIDS) VALUES (" + category.getId()+ "', '"+category.getCategoryName()+ "', '"+category.getTaskids()+"')";
+		final String sql = "insert into CATEGORIES(ID,CATEGORY_NAME,TASKIDS) VALUES (" + category.getId()+ ", '"+category.getCategoryName()+ "', '"+category.getTaskids()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -35,11 +35,9 @@ public class CategoryDaoImpl implements CategoryDao{
 
 	@Override
 	public void removeCategory(int categoryid) {
-		String sql = "delete CATEGORIES where ID = ?";
-		Object[] params = {categoryid};
-		int[] types = {Types.INTEGER};
+		String sql = "delete from CATEGORIES where ID = "+categoryid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-		jdbcTemplate.update(sql,params,types);
+		jdbcTemplate.update(sql);
 		
 	}
 
@@ -67,16 +65,16 @@ public class CategoryDaoImpl implements CategoryDao{
 
 	@Override
 	public Category getCategoryofTask(int taskid) {
-		String sql = "SELECT * FROM CATEGORIES " + "WHERE TASKIDS LIKE '%"+taskid+"%' ";
+		String taskidString = Integer.toString(taskid);
+		String sql = "SELECT * FROM CATEGORIES " + "WHERE TASKIDS LIKE '%"+taskidString+"%' ";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-	 
-		Category category = jdbcTemplate.queryForObject(sql, Category.class);
+		List<Category> categoryList = jdbcTemplate.query(sql, new CategoryRowMapper());
 		
-		if(category == null){
+		if(categoryList == null || categoryList.isEmpty()){
 			return null;
 		}
 		else{
-			return category;
+			return categoryList.get(0);
 		}
 	}
 

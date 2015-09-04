@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public void addExistingCategorytoTask(Category category, int taskid) {
 		String taskids = category.getTaskids();
 		String taskidString = Integer.toString(taskid);
-		taskids = taskids.concat(", "+taskidString); //updating taskids of category
+		category.setTaskids(taskids+", "+taskidString); //updating taskids of category
 		categoryDao.updateCategory(category);
 	}
 }

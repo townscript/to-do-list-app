@@ -12,7 +12,7 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "CATEGORIES")
 
-public class Category {
+public class Category implements Comparable<Category>{
 	@Id @GeneratedValue
 	@Column(name = "ID")
 	private int id;
@@ -45,5 +45,10 @@ public class Category {
 
 	public void setTaskids(String taskids) {
 		this.taskids = taskids;
+	}
+
+	@Override
+	public int compareTo(Category category) {
+		return this.categoryName.compareTo(category.getCategoryName());
 	}
 }

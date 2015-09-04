@@ -1,8 +1,8 @@
 package main.java.com.townscript.todo.service.user;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import main.java.com.townscript.todo.dao.category.CategoryDao;
 import main.java.com.townscript.todo.dao.category.CategoryDaoImpl;
@@ -34,17 +34,23 @@ public class UserServiceImpl implements UserService{
 		defaultTask2.setTaskName("Write code tomorrow");
 		defaultTask1.setUserid(userid);
 		defaultTask2.setUserid(userid);
-		taskDao.addTask(defaultTask1);
-		taskDao.addTask(defaultTask2);
+		int taskid1 = taskDao.addTask(defaultTask1);
+		int taskid2 = taskDao.addTask(defaultTask2);
+		String defaulttask1Id = Integer.toString(taskid1);
+		String defaulttask2Id = Integer.toString(taskid2);
 		//add default tags
 		Tag defaulttag1 = new Tag();
 		Tag defaulttag2 = new Tag();
 		Tag defaulttag3 = new Tag();
 		Tag defaulttag4 = new Tag();
 		defaulttag1.setTagName("office");
+		defaulttag1.setTaskids(defaulttask2Id);
 		defaulttag2.setTagName("home");
-		defaulttag3.setTagName("movie");
+		defaulttag2.setTaskids(defaulttask1Id);
+		defaulttag3.setTagName("vegetables");
+		defaulttag3.setTaskids(defaulttask1Id);
 		defaulttag4.setTagName("project");
+		defaulttag4.setTaskids(defaulttask2Id);
 		tagDao.addTag(defaulttag1);
 		tagDao.addTag(defaulttag2);
 		tagDao.addTag(defaulttag3);
@@ -52,8 +58,10 @@ public class UserServiceImpl implements UserService{
 		//add default categories
 		Category defaultCategory1 = new Category();
 		Category defaultCategory2 = new Category();
-		defaultCategory1.setCategoryName("Work");
-		defaultCategory2.setCategoryName("Personal");
+		defaultCategory1.setCategoryName("work");
+		defaultCategory1.setTaskids(defaulttask2Id);
+		defaultCategory2.setCategoryName("personal");
+		defaultCategory2.setTaskids(defaulttask1Id);
 		categoryDao.addCategory(defaultCategory1);
 		categoryDao.addCategory(defaultCategory2);
 		return userid;
@@ -61,16 +69,13 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public boolean authenticateUser(String username, String password) throws Exception {
-		if(!userDao.checkUserExist(username)){
-			throw new Exception("Invalid Username");
-		}
-		else{
+		
 			boolean returnValue = userDao.isAuthenticUser(username, password);
 			if (returnValue == false){
-				throw new Exception("Invalid password");
+				throw new Exception("Invalid credentials");
 			}
 			return returnValue;
-		}
+		
 	}
 	
 
@@ -99,8 +104,8 @@ public class UserServiceImpl implements UserService{
 
 	//load tags of all tasks of the user
 	@Override
-	public HashSet<Tag> loadTags(int userid) { 
-		HashSet<Tag> tagsList = new HashSet<Tag>(); //use Hashset to disallow duplicates
+	public TreeSet<Tag> loadTags(int userid) { 
+		TreeSet<Tag> tagsList = new TreeSet<Tag>(); //use treeset to disallow duplicates and get alphabetical order of tags
 		List<Task> tasksList = taskDao.readTasksofUsers(userid);
 		for (Task task : tasksList) {
 			List<Tag> tagsListofTask = new ArrayList<Tag>();
@@ -114,8 +119,8 @@ public class UserServiceImpl implements UserService{
 
 	//load categories of all tasks of the user
 	@Override
-	public HashSet<Category> loadCategories(int userid) {
-		HashSet<Category> categoriesList = new HashSet<Category>();
+	public TreeSet<Category> loadCategories(int userid) {
+		TreeSet<Category> categoriesList = new TreeSet<Category>(); //use treeset to disallow duplicates and get alphabetical order of categories
 		List<Task> tasksList = taskDao.readTasksofUsers(userid);
 		for (Task task : tasksList) {
 		    Category category = categoryDao.getCategoryofTask(task.getId());

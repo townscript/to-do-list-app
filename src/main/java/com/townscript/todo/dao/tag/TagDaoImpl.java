@@ -21,7 +21,7 @@ public class TagDaoImpl implements TagDao{
 
 	@Override
 	public int addTag(Tag tag) {
-		final String sql = "insert into TAGS(ID,TAG_NAME,TASKIDS) VALUES (" + tag.getId()+ "', '"+tag.getTagName()+ "', '"+tag.getTaskids()+"')";
+		final String sql = "insert into TAGS(ID,TAG_NAME,TASKIDS) VALUES (" + tag.getId()+ ", '"+tag.getTagName()+ "', '"+tag.getTaskids()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -36,7 +36,7 @@ public class TagDaoImpl implements TagDao{
 
 	@Override
 	public void removeTag(int tagid) {
-		String sql = "delete TAGS where ID = ?";
+		String sql = "delete from TAGS where ID = ?";
 		Object[] params = {tagid};
 		int[] types = {Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
@@ -72,7 +72,8 @@ public class TagDaoImpl implements TagDao{
 	@Override
 	public List<Tag> getTagsofTask(int taskid) {
 		List<Tag> tagsList = new ArrayList<Tag>();
-		String sql = "SELECT * FROM TAGS " + "WHERE TASKIDS LIKE '%"+taskid+"%' ";
+		String taskidString = Integer.toString(taskid);
+		String sql = "SELECT * FROM TAGS " + "WHERE TASKIDS LIKE '%"+taskidString+"%' ";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 	 
 		tagsList = jdbcTemplate.query(sql, new TagRowMapper());

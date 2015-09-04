@@ -35,7 +35,7 @@ public class TagServiceImpl implements TagService{
 	public void addExistingTagtoTask(Tag tag, int taskid) {
 		String taskids = tag.getTaskids();
 		String taskidString = Integer.toString(taskid);
-		taskids = taskids.concat(", "+taskidString); //updating taskids of tag
+		tag.setTaskids(taskids+", "+taskidString); //updating taskids of tag
 		tagDao.updateTag(tag);
 		
 	}

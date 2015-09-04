@@ -11,7 +11,7 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=false)
 @Entity
 @Table(name = "TAGS")
-public class Tag {
+public class Tag implements Comparable<Tag>{
 	@Id @GeneratedValue
 	@Column(name = "ID")
 	private int id;
@@ -46,6 +46,12 @@ public class Tag {
 		this.taskids = taskids;
 	}
 
+	@Override
+	public int compareTo(Tag tag) {
+		return this.getTagName().compareTo(tag.getTagName());
+	}
+
+	
 	
 
 }
