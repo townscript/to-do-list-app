@@ -108,6 +108,8 @@ public class UserServiceImpl implements UserService{
 	public boolean authenticateUser(String username, String password) throws Exception {
 		
 			boolean returnValue = userDao.isAuthenticUser(username, password);
+			
+			// Why so generic Exception, why simply it can't be returned false by the service? 
 			if (returnValue == false){
 				throw new Exception("Invalid credentials");
 			}
@@ -143,6 +145,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public TreeSet<Tag> loadTags(int userid) { 
 		TreeSet<Tag> tagsList = new TreeSet<Tag>(); //use treeset to disallow duplicates and get alphabetical order of tags
+		// The approach is correct, but looks costly from Memory & Performance perspective. Any better way?
 		List<Task> tasksList = taskDao.readTasksofUsers(userid);
 		for (Task task : tasksList) {
 			List<Tag> tagsListofTask = new ArrayList<Tag>();
@@ -158,6 +161,8 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public TreeSet<Category> loadCategories(int userid) {
 		TreeSet<Category> categoriesList = new TreeSet<Category>(); //use treeset to disallow duplicates and get alphabetical order of categories
+		// One database query fired for loading each task, Costly operaion! Let's have a DAO service for 
+		// loading multiple categories through a list firing a single query
 		List<Task> tasksList = taskDao.readTasksofUsers(userid);
 		for (Task task : tasksList) {
 		    Category category = categoryDao.getCategoryofTask(task.getId());
