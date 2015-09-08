@@ -21,6 +21,10 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public int addUser(final User user) {
+		
+		// Comment-1: For easily readibility, below line should be broken into multiple lines
+		// Comment-2: Table names and Column names are parameters used multiple times in this class, 
+		// they should be defined at instance level as - Private Static Final String
 		final String sql = "insert into USER(ID,USERNAME,PASSWORD,FIRSTNAME,LASTNAME) VALUES (" + user.getId()+ ", '" + user.getUsername() +"', '"+ user.getPassword()+"', '"+ user.getFirstname()+"', '"+user.getLastname()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -55,8 +59,12 @@ public class UserDaoImpl implements UserDao {
 		String sql = "SELECT * FROM USER " + "WHERE USERNAME = '"+ username+"' AND PASSWORD = '"+ password + "'";
 		 
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
-
+                
+                // If our aim is to just check number of user, why should we load whole object in memory? 
+                // a count query is enough. More memory & performance optimised solution :)
 		List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
+		
+		// Do we really need Else here? :)
 		if(users == null || users.isEmpty()){
 			return false;
 		}
