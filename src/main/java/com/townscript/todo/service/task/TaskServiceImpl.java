@@ -1,25 +1,56 @@
-package main.java.com.townscript.todo.service.task;
+package com.townscript.todo.service.task;
 
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.townscript.todo.dao.category.CategoryDao;
-import main.java.com.townscript.todo.dao.category.CategoryDaoImpl;
-import main.java.com.townscript.todo.dao.tag.TagDao;
-import main.java.com.townscript.todo.dao.tag.TagDaoImpl;
-import main.java.com.townscript.todo.dao.task.TaskDao;
-import main.java.com.townscript.todo.dao.task.TaskDaoImpl;
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.Task;
+import com.townscript.todo.dao.category.CategoryDao;
+import com.townscript.todo.dao.tag.TagDao;
+import com.townscript.todo.dao.task.TaskDao;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Task;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
 public class TaskServiceImpl implements TaskService{
+	
+	@Autowired
+	TaskDao taskDao;
+	@Autowired
+	TagDao tagDao;
+	@Autowired
+	CategoryDao categoryDao;
+	
+	public TaskDao getTaskDao() {
+		return taskDao;
+	}
 
-	TaskDao taskDao = new TaskDaoImpl();
-	TagDao tagDao = new TagDaoImpl();
-	CategoryDao categoryDao = new CategoryDaoImpl();
+	public void setTaskDao(TaskDao taskDao) {
+		this.taskDao = taskDao;
+	}
+
+	public TagDao getTagDao() {
+		return tagDao;
+	}
+
+	public void setTagDao(TagDao tagDao) {
+		this.tagDao = tagDao;
+	}
+
+	public CategoryDao getCategoryDao() {
+		return categoryDao;
+	}
+
+	public void setCategoryDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
+	}
+	
 	@Override
 	public int addTask(Task task) {
 		return taskDao.addTask(task);

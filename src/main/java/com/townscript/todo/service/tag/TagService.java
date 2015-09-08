@@ -1,6 +1,6 @@
-package main.java.com.townscript.todo.service.tag;
+package com.townscript.todo.service.tag;
 
-import main.java.com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Tag;
 
 public interface TagService {
 	public int addTag(Tag tag);

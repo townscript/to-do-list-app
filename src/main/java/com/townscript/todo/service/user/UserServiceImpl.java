@@ -1,29 +1,66 @@
-package main.java.com.townscript.todo.service.user;
+package com.townscript.todo.service.user;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-import main.java.com.townscript.todo.dao.category.CategoryDao;
-import main.java.com.townscript.todo.dao.category.CategoryDaoImpl;
-import main.java.com.townscript.todo.dao.tag.TagDao;
-import main.java.com.townscript.todo.dao.tag.TagDaoImpl;
-import main.java.com.townscript.todo.dao.task.TaskDao;
-import main.java.com.townscript.todo.dao.task.TaskDaoImpl;
-import main.java.com.townscript.todo.dao.user.UserDao;
-import main.java.com.townscript.todo.dao.user.UserDaoImpl;
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.Task;
-import main.java.com.townscript.todo.model.User;
+import com.townscript.todo.dao.category.CategoryDao;
+import com.townscript.todo.dao.tag.TagDao;
+import com.townscript.todo.dao.task.TaskDao;
+import com.townscript.todo.dao.user.UserDao;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Task;
+import com.townscript.todo.model.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
 public class UserServiceImpl implements UserService{
 	
-	UserDao userDao = new UserDaoImpl();
-	TaskDao taskDao = new TaskDaoImpl();
-	TagDao tagDao = new TagDaoImpl();
-	CategoryDao categoryDao = new CategoryDaoImpl();
+	@Autowired
+	UserDao userDao;
+	@Autowired
+	TaskDao taskDao;
+	@Autowired
+	TagDao tagDao;
+	@Autowired
+	CategoryDao categoryDao;
 	
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	public TaskDao getTaskDao() {
+		return taskDao;
+	}
+
+	public void setTaskDao(TaskDao taskDao) {
+		this.taskDao = taskDao;
+	}
+
+	public TagDao getTagDao() {
+		return tagDao;
+	}
+
+	public void setTagDao(TagDao tagDao) {
+		this.tagDao = tagDao;
+	}
+
+	public CategoryDao getCategoryDao() {
+		return categoryDao;
+	}
+
+	public void setCategoryDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
+	}
+
 	@Override
 	public int registerUser(User user) {
 		int userid = userDao.addUser(user);

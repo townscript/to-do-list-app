@@ -1,6 +1,6 @@
-package main.java.com.townscript.todo.dao.category;
+package com.townscript.todo.dao.category;
 
-import main.java.com.townscript.todo.model.Category;
+import com.townscript.todo.model.Category;
 
 public interface CategoryDao {
 	public int addCategory(Category category);

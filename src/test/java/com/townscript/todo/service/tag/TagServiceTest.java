@@ -1,4 +1,4 @@
-package test.java.com.townscript.todo.service.tag;
+package com.townscript.todo.service.tag;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,30 +6,36 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.TagRowMapper;
-import main.java.com.townscript.todo.model.User;
-import main.java.com.townscript.todo.service.tag.TagService;
-import main.java.com.townscript.todo.service.tag.TagServiceImpl;
-import main.java.com.townscript.todo.service.task.TaskService;
-import main.java.com.townscript.todo.service.task.TaskServiceImpl;
-import main.java.com.townscript.todo.service.user.UserService;
-import main.java.com.townscript.todo.service.user.UserServiceImpl;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.townscript.todo.dao.JdbcTemplateFactory;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.TagRowMapper;
+import com.townscript.todo.model.User;
+import com.townscript.todo.service.task.TaskService;
+import com.townscript.todo.service.user.UserService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/com/townscript/todo/testbeans.xml")
 public class TagServiceTest {
-	TagService tagService = new TagServiceImpl();
-	UserService userService = new UserServiceImpl();
-	TaskService taskService = new TaskServiceImpl();
+	
+	@Autowired
+	TagService tagService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	TaskService taskService;
 	
 	@Before
 	public void createEnvironment()
@@ -57,6 +63,7 @@ public class TagServiceTest {
 	public void testAddTag(){
 		Tag tag = new Tag();
 		tag.setTagName("skyfall");
+		tag.setTaskids("0");
 		int tagid = tagService.addTag(tag);
 		String sql = "SELECT * from TAGS WHERE ID = "+tagid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();

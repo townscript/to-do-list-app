@@ -1,4 +1,4 @@
-package test.java.com.townscript.todo.service.category;
+package com.townscript.todo.service.category;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,28 +6,33 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.CategoryRowMapper;
-import main.java.com.townscript.todo.model.User;
-import main.java.com.townscript.todo.service.category.CategoryService;
-import main.java.com.townscript.todo.service.category.CategoryServiceImpl;
-import main.java.com.townscript.todo.service.user.UserService;
-import main.java.com.townscript.todo.service.user.UserServiceImpl;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.townscript.todo.dao.JdbcTemplateFactory;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.CategoryRowMapper;
+import com.townscript.todo.model.User;
+import com.townscript.todo.service.user.UserService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/com/townscript/todo/testbeans.xml")
 public class CategoryServiceTest {
 
-	UserService userService = new UserServiceImpl();
-	CategoryService categoryService = new CategoryServiceImpl();
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private CategoryService categoryService;
 	
 	@Before
 	public void createEnvironment()
@@ -55,6 +60,7 @@ public class CategoryServiceTest {
 	public void testAddCategory(){
 		Category category = new Category();
 		category.setCategoryName("007");
+		category.setTaskids("0");
 		int categoryid = categoryService.addCategory(category);
 		String sql = "SELECT * from CATEGORIES WHERE ID = "+ categoryid;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();

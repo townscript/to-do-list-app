@@ -1,6 +1,6 @@
-package main.java.com.townscript.todo.dao.user;
+package com.townscript.todo.dao.user;
 
-import main.java.com.townscript.todo.model.User;
+import com.townscript.todo.model.User;
 public interface UserDao {
 
 	public int addUser(User user);

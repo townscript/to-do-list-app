@@ -1,4 +1,4 @@
-package main.java.com.townscript.todo.dao.tag;
+package com.townscript.todo.dao.tag;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.TagRowMapper;
+import com.townscript.todo.dao.JdbcTemplateFactory;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.TagRowMapper;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

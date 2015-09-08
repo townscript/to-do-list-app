@@ -1,12 +1,12 @@
-package main.java.com.townscript.todo.service.user;
+package com.townscript.todo.service.user;
 
 import java.util.List;
 import java.util.TreeSet;
 
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.Task;
-import main.java.com.townscript.todo.model.User;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Task;
+import com.townscript.todo.model.User;
 
 public interface UserService {
 	public int registerUser(User user);

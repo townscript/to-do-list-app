@@ -1,4 +1,4 @@
-package main.java.com.townscript.todo.dao.user;
+package com.townscript.todo.dao.user;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,9 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
-import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
-import main.java.com.townscript.todo.model.User;
-import main.java.com.townscript.todo.model.UserRowMapper;
+import com.townscript.todo.dao.JdbcTemplateFactory;
+import com.townscript.todo.model.User;
+import com.townscript.todo.model.UserRowMapper;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

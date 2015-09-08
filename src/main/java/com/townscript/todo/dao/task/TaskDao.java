@@ -1,8 +1,8 @@
-package main.java.com.townscript.todo.dao.task;
+package com.townscript.todo.dao.task;
 
 import java.util.List;
 
-import main.java.com.townscript.todo.model.Task;
+import com.townscript.todo.model.Task;
 
 public interface TaskDao {
 	public int addTask(Task task);

@@ -1,4 +1,4 @@
-package test.java.com.townscript.todo.service.user;
+package com.townscript.todo.service.user;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,41 +8,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.Task;
-import main.java.com.townscript.todo.model.User;
-import main.java.com.townscript.todo.model.UserRowMapper;
-import main.java.com.townscript.todo.service.user.UserService;
-import main.java.com.townscript.todo.service.user.UserServiceImpl;
+import com.townscript.todo.dao.JdbcTemplateFactory;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Task;
+import com.townscript.todo.model.User;
+import com.townscript.todo.model.UserRowMapper;
+import com.townscript.todo.service.user.UserService;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/com/townscript/todo/testbeans.xml")
 public class UserServiceTest {
 	
-	UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 	
 	@Before
 	public void createEnvironment()
 	{
 		String sql = "DELETE FROM USER";
-		String sqlTwo = "DELETE FROM TASKS";
-		String sqlThree = "DELETE FROM TAGS";
-		String sqlFour = "DELETE FROM CATEGORIES";
 		 
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql);
-		jdbcTemplate.update(sqlTwo);
-		jdbcTemplate.update(sqlThree);
-		jdbcTemplate.update(sqlFour);
 		
 		System.out.println("Set Up Environment");
 	}
@@ -51,15 +51,9 @@ public class UserServiceTest {
 	public void clearEnvironment()
 	{
 		String sql = "DELETE FROM USER";
-		String sqlTwo = "DELETE FROM TASKS";
-		String sqlThree = "DELETE FROM TAGS";
-		String sqlFour = "DELETE FROM CATEGORIES";
 		 
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql);
-		jdbcTemplate.update(sqlTwo);
-		jdbcTemplate.update(sqlThree);
-		jdbcTemplate.update(sqlFour);
 		
 		System.out.println("Clear Environment");
 	}
@@ -183,6 +177,8 @@ public class UserServiceTest {
 		List<Task> tasksList = userService.loadTasks(userObject.getId());
 		Assert.assertEquals("Buy groceries today",tasksList.get(0).getTaskName());
 		Assert.assertEquals("Write code tomorrow",tasksList.get(1).getTaskName());
+		String sqlTwo = "DELETE FROM TASKS";
+		jdbcTemplate.update(sqlTwo);
 	}
 	
 	@Test
@@ -203,6 +199,8 @@ public class UserServiceTest {
 		Assert.assertEquals("office",tagsList.get(1).getTagName());
 		Assert.assertEquals("project",tagsList.get(2).getTagName());
 		Assert.assertEquals("vegetables",tagsList.get(3).getTagName());
+		String sqlTwo = "DELETE FROM TAGS";
+		jdbcTemplate.update(sqlTwo);
 	}
 	
 	@Test
@@ -221,5 +219,7 @@ public class UserServiceTest {
 		List<Category> categoryList = new ArrayList<Category>(categories);
 		Assert.assertEquals("personal",categoryList.get(0).getCategoryName());
 		Assert.assertEquals("work",categoryList.get(1).getCategoryName());
+		String sqlTwo = "DELETE FROM CATEGORIES";
+		jdbcTemplate.update(sqlTwo);
 	}
 }

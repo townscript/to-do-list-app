@@ -1,4 +1,4 @@
-package main.java.com.townscript.todo.dao;
+package com.townscript.todo.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 

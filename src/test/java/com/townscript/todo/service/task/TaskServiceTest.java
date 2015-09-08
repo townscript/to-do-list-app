@@ -1,4 +1,4 @@
-package test.java.com.townscript.todo.service.task;
+package com.townscript.todo.service.task;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,36 +6,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import main.java.com.townscript.todo.dao.JdbcTemplateFactory;
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.Task;
-import main.java.com.townscript.todo.model.TaskRowMapper;
-import main.java.com.townscript.todo.model.User;
-import main.java.com.townscript.todo.service.category.CategoryService;
-import main.java.com.townscript.todo.service.category.CategoryServiceImpl;
-import main.java.com.townscript.todo.service.tag.TagService;
-import main.java.com.townscript.todo.service.tag.TagServiceImpl;
-import main.java.com.townscript.todo.service.task.TaskService;
-import main.java.com.townscript.todo.service.task.TaskServiceImpl;
-import main.java.com.townscript.todo.service.user.UserService;
-import main.java.com.townscript.todo.service.user.UserServiceImpl;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.townscript.todo.dao.JdbcTemplateFactory;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Task;
+import com.townscript.todo.model.TaskRowMapper;
+import com.townscript.todo.model.User;
+import com.townscript.todo.service.category.CategoryService;
+import com.townscript.todo.service.tag.TagService;
+import com.townscript.todo.service.user.UserService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/com/townscript/todo/testbeans.xml")
 public class TaskServiceTest {
 	
-	TaskService taskService = new TaskServiceImpl();
-	UserService userService = new UserServiceImpl();
-	TagService tagService = new TagServiceImpl();
-	CategoryService categoryService = new CategoryServiceImpl();
+	@Autowired
+	private TaskService taskService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private TagService tagService;
+	@Autowired
+	private CategoryService categoryService;
 	
 	@Before
 	public void createEnvironment()
@@ -50,6 +55,7 @@ public class TaskServiceTest {
 		System.out.println("Set Up Environment");
 	}
 	
+
 	@After
 	public void clearEnvironment()
 	{

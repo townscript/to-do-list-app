@@ -1,6 +1,6 @@
-package main.java.com.townscript.todo.service.category;
+package com.townscript.todo.service.category;
 
-import main.java.com.townscript.todo.model.Category;
+import com.townscript.todo.model.Category;
 
 public interface CategoryService {
 	public int addCategory(Category category);

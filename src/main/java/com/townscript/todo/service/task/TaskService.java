@@ -1,10 +1,10 @@
-package main.java.com.townscript.todo.service.task;
+package com.townscript.todo.service.task;
 
 import java.util.List;
 
-import main.java.com.townscript.todo.model.Category;
-import main.java.com.townscript.todo.model.Tag;
-import main.java.com.townscript.todo.model.Task;
+import com.townscript.todo.model.Category;
+import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.Task;
 
 public interface TaskService {
 	public int addTask(Task task);

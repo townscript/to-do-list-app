@@ -1,13 +1,27 @@
-package main.java.com.townscript.todo.service.category;
+package com.townscript.todo.service.category;
 
-import main.java.com.townscript.todo.dao.category.CategoryDao;
-import main.java.com.townscript.todo.dao.category.CategoryDaoImpl;
-import main.java.com.townscript.todo.model.Category;
+import com.townscript.todo.dao.category.CategoryDao;
+import com.townscript.todo.model.Category;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService{
 
-	CategoryDao categoryDao = new CategoryDaoImpl();
+	@Autowired
+	CategoryDao categoryDao;
 	
+	public CategoryDao getCategoryDao() {
+		return categoryDao;
+	}
+
+	public void setCategoryDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
+	}
+
 	@Override
 	public int addCategory(Category category) {
 		return categoryDao.addCategory(category);
