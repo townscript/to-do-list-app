@@ -51,6 +51,7 @@ public class UserDaoImpl implements UserDao {
 		Object[] params = {user.getUsername(),user.getPassword(),user.getFirstname(),user.getLastname(),user.getId()};
 		int[] types = {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		// What happens when this method throws an Exception? 
 		jdbcTemplate.update(sql,params,types);
 		
 	}
