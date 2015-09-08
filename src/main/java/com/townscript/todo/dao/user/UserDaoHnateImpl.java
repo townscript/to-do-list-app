@@ -25,6 +25,8 @@ public class UserDaoHnateImpl extends HibernateDaoSupport implements UserDao{
 		getHibernateTemplate().delete(user);
 	}
 
+        // We also have an option to use a single method provided by Hibernate - saveOrUpdate()
+        // Not compulsory to use, but saves code 
 	@Override
 	public void updateUser(User user) {
 		getHibernateTemplate().update(user);
@@ -49,10 +51,12 @@ public class UserDaoHnateImpl extends HibernateDaoSupport implements UserDao{
 		}
 	}
 
+        // readUser() is little confusing as method name, it should be loadUser(), or something more appropriate
 	@Override
 	public User readUser(int userId) {
 		String queryString = "FROM "+ User.class.getName() +" WHERE id = :userId";
-		
+	
+		// How we will be closing this session?
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(queryString);
 
