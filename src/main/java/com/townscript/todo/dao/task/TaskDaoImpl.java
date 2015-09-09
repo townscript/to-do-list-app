@@ -19,7 +19,8 @@ public class TaskDaoImpl implements TaskDao {
 
 	@Override
 	public int addTask(Task task) {
-		final String sql = "INSERT INTO TASKS(ID,TASK_NAME,USER_ID,MARK,SUBTASK,PARENT_ID,SEQUENCE_NUMBER) VALUES (" + task.getId()+ ", '"+task.getTaskName()+ "', "+task.getUserid()+  ", "+task.isMark()+ ", "+task.isSubtask()+ ", "+task.getParentid()+ ", "+task.getSequenceNumber()+")";
+		final String sql = "INSERT INTO TASKS(ID,TASK_NAME,USER_ID,MARK,SUBTASK,PARENT_ID,SEQUENCE_NUMBER) " +
+		"VALUES (" + task.getId()+ ", '"+task.getTaskName()+ "', "+task.getUserid()+  ", "+task.isMark()+ ", "+task.isSubtask()+ ", "+task.getParentid()+ ", "+task.getSequenceNumber()+")";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -33,16 +34,15 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public Task readTask(int taskid) {
-		String sql = "SELECT * FROM TASKS " + "WHERE ID = "+ taskid;
+	public Task loadTask(int taskId) {
+		String sql = "SELECT * FROM TASKS " + "WHERE ID = "+ taskId;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		List<Task> taskList = jdbcTemplate.query(sql, new TaskRowMapper());
 		if(taskList == null || taskList.isEmpty()){
 			return null;
 		}
-		else{
+	
 			return taskList.get(0);
-		}
 	}
 
 	@Override
@@ -56,23 +56,22 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public void removeTask(int taskid) {
-		String sql = "delete from TASKS where ID = "+taskid;
+	public void removeTask(int taskId) {
+		String sql = "delete from TASKS where ID = "+taskId;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql);
 	}
 
 	@Override
-	public List<Task> readTasksofUsers(int userid) {
-		String sql = "SELECT * FROM TASKS " + "WHERE USER_ID = "+ userid;
+	public List<Task> loadTasksofUsers(int userId) {
+		String sql = "SELECT * FROM TASKS " + "WHERE USER_ID = "+ userId;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		List<Task> taskList = jdbcTemplate.query(sql, new TaskRowMapper());
 		if(taskList == null || taskList.isEmpty()){
 			return null;
 		}
-		else{
+		
 			return taskList;
-		}
 	}
 
 }

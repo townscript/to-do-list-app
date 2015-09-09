@@ -3,9 +3,9 @@ package com.townscript.todo.dao.category;
 import com.townscript.todo.model.Category;
 
 public interface CategoryDao {
-	public int addCategory(Category category);
-	public void removeCategory(int categoryid);
-	public Category readCategory(int categoryid);
-	public void updateCategory(Category category);
-	public Category getCategoryofTask(int taskid);
+	int addCategory(Category category);
+	void removeCategory(int categoryId);
+	Category loadCategory(int categoryId);
+	void updateCategory(Category category);
+	Category getCategoryofTask(int taskId);
 }

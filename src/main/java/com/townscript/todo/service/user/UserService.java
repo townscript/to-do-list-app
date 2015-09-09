@@ -9,12 +9,12 @@ import com.townscript.todo.model.Task;
 import com.townscript.todo.model.User;
 
 public interface UserService {
-	public int registerUser(User user);
-	public boolean authenticateUser(String username,String password) throws Exception;
-	public void changePassword(int userid, String newPassword);
-	public User getUserInfo(int userid);
-	public void deleteUser(int userid);
-	public List<Task> loadTasks(int userid);
-	public TreeSet<Tag> loadTags(int userid);
-	public TreeSet<Category> loadCategories(int userid);
+	int registerUser(User user);
+	boolean authenticateUser(String username,String password);
+	void changePassword(int userId, String newPassword);
+	User getUserInfo(int userId);
+	void deleteUser(int userId);
+	List<Task> loadTasks(int userId);
+	TreeSet<Tag> loadTags(int userId);
+	TreeSet<Category> loadCategories(int userId);
 }

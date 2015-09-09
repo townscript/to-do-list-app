@@ -19,20 +19,20 @@ public class TagDaoHnateImpl extends HibernateDaoSupport implements TagDao{
 	}
 
 	@Override
-	public void removeTag(int tagid) {
+	public void removeTag(int tagId) {
 		Tag tag = new Tag();
-		tag.setId(tagid);
+		tag.setId(tagId);
 		getHibernateTemplate().delete(tag);
 	}
 
 	@Override
-	public Tag readTag(int tagid) {
+	public Tag loadTag(int tagId) {
 		String queryString = "FROM "+ Tag.class.getName() +" WHERE id = :tagId";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(queryString);
 
-		query.setParameter("tagId", tagid);
+		query.setParameter("tagId", tagId);
 		List<Tag> tagsList = query.list();
 		return tagsList.get(0);	
 	}
@@ -43,8 +43,8 @@ public class TagDaoHnateImpl extends HibernateDaoSupport implements TagDao{
 	}
 
 	@Override
-	public List<Tag> getTagsofTask(int taskid) {
-		String taskidString = Integer.toString(taskid);
+	public List<Tag> getTagsofTask(int taskId) {
+		String taskidString = Integer.toString(taskId);
 		String queryString = "FROM "+ Tag.class.getName() +" WHERE taskids like :taskid";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();

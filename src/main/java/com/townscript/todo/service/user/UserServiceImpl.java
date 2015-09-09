@@ -63,18 +63,18 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int registerUser(User user) {
-		int userid = userDao.addUser(user);
+		int userId = userDao.addUser(user);
 		//add default tasks
 		Task defaultTask1 = new Task();
 		Task defaultTask2 = new Task();
 		defaultTask1.setTaskName("Buy groceries today");
 		defaultTask2.setTaskName("Write code tomorrow");
-		defaultTask1.setUserid(userid);
-		defaultTask2.setUserid(userid);
-		int taskid1 = taskDao.addTask(defaultTask1);
-		int taskid2 = taskDao.addTask(defaultTask2);
-		String defaulttask1Id = Integer.toString(taskid1);
-		String defaulttask2Id = Integer.toString(taskid2);
+		defaultTask1.setUserid(userId);
+		defaultTask2.setUserid(userId);
+		int taskId1 = taskDao.addTask(defaultTask1);
+		int taskId2 = taskDao.addTask(defaultTask2);
+		String defaulttask1Id = Integer.toString(taskId1);
+		String defaulttask2Id = Integer.toString(taskId2);
 		//add default tags
 		Tag defaulttag1 = new Tag();
 		Tag defaulttag2 = new Tag();
@@ -101,49 +101,46 @@ public class UserServiceImpl implements UserService{
 		defaultCategory2.setTaskids(defaulttask1Id);
 		categoryDao.addCategory(defaultCategory1);
 		categoryDao.addCategory(defaultCategory2);
-		return userid;
+		return userId;
 	}
 
 	@Override
-	public boolean authenticateUser(String username, String password) throws Exception {
+	public boolean authenticateUser(String username, String password){
 		
 			boolean returnValue = userDao.isAuthenticUser(username, password);
-			if (returnValue == false){
-				throw new Exception("Invalid credentials");
-			}
 			return returnValue;
 		
 	}
 	
 
 	@Override
-	public void changePassword(int userid, String newPassword) {
-		User user = userDao.readUser(userid);
+	public void changePassword(int userId, String newPassword){
+		User user = userDao.loadUser(userId);
 		user.setPassword(newPassword);
 		userDao.updateUser(user);
 	}
 
 	@Override
-	public User getUserInfo(int userid) {
-		return userDao.readUser(userid);
+	public User getUserInfo(int userId) {
+		return userDao.loadUser(userId);
 	}
 
 	@Override
-	public void deleteUser(int userid) {
-		userDao.deleteUser(userid);	
+	public void deleteUser(int userId) {
+		userDao.deleteUser(userId);	
 	}
 
 	@Override
-	public List<Task> loadTasks(int userid) {
-		List<Task> tasksList = taskDao.readTasksofUsers(userid);
+	public List<Task> loadTasks(int userId) {
+		List<Task> tasksList = taskDao.loadTasksofUsers(userId);
 		return tasksList;
 	}
 
 	//load tags of all tasks of the user
 	@Override
-	public TreeSet<Tag> loadTags(int userid) { 
+	public TreeSet<Tag> loadTags(int userId) { 
 		TreeSet<Tag> tagsList = new TreeSet<Tag>(); //use treeset to disallow duplicates and get alphabetical order of tags
-		List<Task> tasksList = taskDao.readTasksofUsers(userid);
+		List<Task> tasksList = taskDao.loadTasksofUsers(userId);
 		for (Task task : tasksList) {
 			List<Tag> tagsListofTask = new ArrayList<Tag>();
 			tagsListofTask = tagDao.getTagsofTask(task.getId());
@@ -156,9 +153,9 @@ public class UserServiceImpl implements UserService{
 
 	//load categories of all tasks of the user
 	@Override
-	public TreeSet<Category> loadCategories(int userid) {
+	public TreeSet<Category> loadCategories(int userId) {
 		TreeSet<Category> categoriesList = new TreeSet<Category>(); //use treeset to disallow duplicates and get alphabetical order of categories
-		List<Task> tasksList = taskDao.readTasksofUsers(userid);
+		List<Task> tasksList = taskDao.loadTasksofUsers(userId);
 		for (Task task : tasksList) {
 		    Category category = categoryDao.getCategoryofTask(task.getId());
 		    categoriesList.add(category);

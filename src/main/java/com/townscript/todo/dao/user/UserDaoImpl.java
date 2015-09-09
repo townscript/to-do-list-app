@@ -21,7 +21,8 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public int addUser(final User user) {
-		final String sql = "insert into USER(ID,USERNAME,PASSWORD,FIRSTNAME,LASTNAME) VALUES (" + user.getId()+ ", '" + user.getUsername() +"', '"+ user.getPassword()+"', '"+ user.getFirstname()+"', '"+user.getLastname()+"')";
+		final String sql = "insert into USER(ID,USERNAME,PASSWORD,FIRSTNAME,LASTNAME) " +
+		  "VALUES (" + user.getId()+ ", '" + user.getUsername() +"', '"+ user.getPassword()+"', '"+ user.getFirstname()+"', '"+user.getLastname()+"')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -42,13 +43,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user){
 		String sql = "update USER set USERNAME = ?,PASSWORD = ?,FIRSTNAME = ?,LASTNAME = ? where ID = ?";
 		Object[] params = {user.getUsername(),user.getPassword(),user.getFirstname(),user.getLastname(),user.getId()};
 		int[] types = {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql,params,types);
-		
 	}
 	@Override
 	public boolean isAuthenticUser(String username, String password) {
@@ -56,16 +56,15 @@ public class UserDaoImpl implements UserDao {
 		 
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 
-		List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
-		if(users == null || users.isEmpty()){
+		User user = jdbcTemplate.queryForObject(sql, new UserRowMapper());
+		if(user == null){
 			return false;
 		}
-		else{
 			return true;
-		}
+		
 	}
 	@Override
-	public User readUser(int userId) {
+	public User loadUser(int userId) {
 		String sql = "SELECT * FROM USER " + "WHERE ID = "+ userId;
 	 
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
@@ -75,9 +74,8 @@ public class UserDaoImpl implements UserDao {
 		if(usersList == null || usersList.isEmpty()){
 			return null;
 		}
-		else{
 			return usersList.get(0);
-		}
+		
 	}
 
 

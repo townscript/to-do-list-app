@@ -19,9 +19,9 @@ public class UserDaoHnateImpl extends HibernateDaoSupport implements UserDao{
 	}
 
 	@Override
-	public void deleteUser(int userid) {
+	public void deleteUser(int userId) {
 		User user = new User();
-		user.setId(userid);
+		user.setId(userId);
 		getHibernateTemplate().delete(user);
 	}
 
@@ -50,7 +50,7 @@ public class UserDaoHnateImpl extends HibernateDaoSupport implements UserDao{
 	}
 
 	@Override
-	public User readUser(int userId) {
+	public User loadUser(int userId) {
 		String queryString = "FROM "+ User.class.getName() +" WHERE id = :userId";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();

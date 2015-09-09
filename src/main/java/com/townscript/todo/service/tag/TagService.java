@@ -3,9 +3,9 @@ package com.townscript.todo.service.tag;
 import com.townscript.todo.model.Tag;
 
 public interface TagService {
-	public int addTag(Tag tag);
-	public void addExistingTagtoTask(Tag tag,int taskid);
-	public void deleteTag(int tagid);
-	public Tag readTag(int tagid);
-	public void changeTagName(int tagid, String newTagName);
+	int addTag(Tag tag);
+	void addExistingTagtoTask(Tag tag,int taskId);
+	void deleteTag(int tagId);
+	Tag readTag(int tagId);
+	void changeTagName(int tagId, String newTagName);
 }

@@ -34,28 +34,27 @@ public class CategoryDaoImpl implements CategoryDao{
 	}
 
 	@Override
-	public void removeCategory(int categoryid) {
-		String sql = "delete from CATEGORIES where ID = "+categoryid;
+	public void removeCategory(int categoryId) {
+		String sql = "delete from CATEGORIES where ID = "+categoryId;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql);
 		
 	}
 
 	@Override
-	public Category readCategory(int categoryid) {
-		String sql = "SELECT * FROM CATEGORIES " + "WHERE ID = "+ categoryid;
+	public Category loadCategory(int categoryId) {
+		String sql = "SELECT * FROM CATEGORIES " + "WHERE ID = "+ categoryId;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		List<Category> categoryList = jdbcTemplate.query(sql, new CategoryRowMapper());
 		if(categoryList == null || categoryList.isEmpty()){
 			return null;
 		}
-		else{
+		
 			return categoryList.get(0);
-		}
 	}
 
 	@Override
-	public void updateCategory(Category category) {
+	public void updateCategory(Category category){
 		String sql = "UPDATE CATEGORIES SET CATEGORY_NAME = ?, TASKIDS = ? " + "WHERE ID = ?" ;
 		Object[] params = { category.getCategoryName(), category.getTaskids(), category.getId() };
 		int[] types = {Types.VARCHAR, Types.VARCHAR, Types.INTEGER};
@@ -64,18 +63,17 @@ public class CategoryDaoImpl implements CategoryDao{
 	}
 
 	@Override
-	public Category getCategoryofTask(int taskid) {
-		String taskidString = Integer.toString(taskid);
-		String sql = "SELECT * FROM CATEGORIES " + "WHERE TASKIDS LIKE '%"+taskidString+"%' ";
+	public Category getCategoryofTask(int taskId) {
+		String taskIdString = Integer.toString(taskId);
+		String sql = "SELECT * FROM CATEGORIES " + "WHERE TASKIDS LIKE '%"+taskIdString+"%' ";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		List<Category> categoryList = jdbcTemplate.query(sql, new CategoryRowMapper());
 		
 		if(categoryList == null || categoryList.isEmpty()){
 			return null;
 		}
-		else{
+		
 			return categoryList.get(0);
-		}
 	}
 
 }

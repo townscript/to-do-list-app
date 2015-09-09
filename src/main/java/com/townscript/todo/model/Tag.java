@@ -20,7 +20,7 @@ public class Tag implements Comparable<Tag>{
 	private String tagName;
 	
 	@Column(name = "TASKIDS")
-	private String taskids;
+	private String taskIds;
 
 	public int getId() {
 		return id;
@@ -39,11 +39,11 @@ public class Tag implements Comparable<Tag>{
 	}
 
 	public String getTaskids() {
-		return taskids;
+		return taskIds;
 	}
 
 	public void setTaskids(String taskids) {
-		this.taskids = taskids;
+		this.taskIds = taskids;
 	}
 
 	@Override

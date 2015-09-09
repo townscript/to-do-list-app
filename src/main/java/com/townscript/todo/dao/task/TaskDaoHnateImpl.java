@@ -19,25 +19,25 @@ public class TaskDaoHnateImpl extends HibernateDaoSupport implements TaskDao{
 	}
 
 	@Override
-	public Task readTask(int taskid) {
+	public Task loadTask(int taskId) {
 		String queryString = "FROM "+ Task.class.getName() +" WHERE id = :taskId";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(queryString);
 
-		query.setParameter("taskId", taskid);
+		query.setParameter("taskId", taskId);
 		List<Task> tasksList = query.list();
 		return tasksList.get(0);	
 	}
 
 	@Override
-	public List<Task> readTasksofUsers(int userid) {
+	public List<Task> loadTasksofUsers(int userId) {
 		String queryString = "FROM "+ Task.class.getName() +" WHERE user_id = :userid";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(queryString);
 
-		query.setParameter("userid", userid);
+		query.setParameter("userid", userId);
 		List<Task> tasksList = query.list();
 		return tasksList;	
 	}
@@ -48,9 +48,9 @@ public class TaskDaoHnateImpl extends HibernateDaoSupport implements TaskDao{
 	}
 
 	@Override
-	public void removeTask(int taskid) {
+	public void removeTask(int taskId) {
 		Task task = new Task();
-		task.setId(taskid);
+		task.setId(taskId);
 		getHibernateTemplate().delete(task);
 	}
 

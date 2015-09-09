@@ -2,13 +2,9 @@ package com.townscript.todo.dao.user;
 
 import com.townscript.todo.model.User;
 public interface UserDao {
-
-	public int addUser(User user);
-	public void deleteUser(int userid);
-	public void updateUser(User user);
+	int addUser(User user);
+	void deleteUser(int userId);
+	void updateUser(User user);
 	boolean isAuthenticUser(String username, String password);
-	User readUser(int userId);
-	
-	
-
+	User loadUser(int userId);
 }

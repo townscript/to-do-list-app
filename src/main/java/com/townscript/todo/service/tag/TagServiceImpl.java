@@ -28,28 +28,28 @@ public class TagServiceImpl implements TagService{
 	}
 
 	@Override
-	public void deleteTag(int tagid) {
-		tagDao.removeTag(tagid);
+	public void deleteTag(int tagId) {
+		tagDao.removeTag(tagId);
 	}
 
 	@Override
-	public Tag readTag(int tagid) {
-		return tagDao.readTag(tagid);
+	public Tag readTag(int tagId) {
+		return tagDao.loadTag(tagId);
 	}
 
 	@Override
-	public void changeTagName(int tagid, String newTagName) {
-		Tag tag = tagDao.readTag(tagid);
+	public void changeTagName(int tagId, String newTagName) {
+		Tag tag = tagDao.loadTag(tagId);
 		tag.setTagName(newTagName);
 		tagDao.updateTag(tag);
 		
 	}
 
 	@Override
-	public void addExistingTagtoTask(Tag tag, int taskid) {
-		String taskids = tag.getTaskids();
-		String taskidString = Integer.toString(taskid);
-		tag.setTaskids(taskids+", "+taskidString); //updating taskids of tag
+	public void addExistingTagtoTask(Tag tag, int taskId) {
+		String taskIds = tag.getTaskids();
+		String taskIdString = Integer.toString(taskId);
+		tag.setTaskids(taskIds+", "+taskIdString); //updating taskids of tag
 		tagDao.updateTag(tag);
 		
 	}

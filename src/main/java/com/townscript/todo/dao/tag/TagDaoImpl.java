@@ -35,9 +35,9 @@ public class TagDaoImpl implements TagDao{
 	}
 
 	@Override
-	public void removeTag(int tagid) {
+	public void removeTag(int tagId) {
 		String sql = "delete from TAGS where ID = ?";
-		Object[] params = {tagid};
+		Object[] params = {tagId};
 		int[] types = {Types.INTEGER};
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 		jdbcTemplate.update(sql,params,types);
@@ -45,8 +45,8 @@ public class TagDaoImpl implements TagDao{
 	}
 
 	@Override
-	public Tag readTag(int tagid) {
-		String sql = "SELECT * FROM TAGS " + "WHERE ID = "+ tagid;
+	public Tag loadTag(int tagId) {
+		String sql = "SELECT * FROM TAGS " + "WHERE ID = "+ tagId;
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 	 
 		List<Tag> tagList = jdbcTemplate.query(sql, new TagRowMapper());
@@ -54,10 +54,8 @@ public class TagDaoImpl implements TagDao{
 		if(tagList == null || tagList.isEmpty()){
 			return null;
 		}
-		else{
-			return tagList.get(0);
-		}
 		
+			return tagList.get(0);
 	}
 
 	@Override
@@ -70,9 +68,9 @@ public class TagDaoImpl implements TagDao{
 	}
 
 	@Override
-	public List<Tag> getTagsofTask(int taskid) {
+	public List<Tag> getTagsofTask(int taskId) {
 		List<Tag> tagsList = new ArrayList<Tag>();
-		String taskidString = Integer.toString(taskid);
+		String taskidString = Integer.toString(taskId);
 		String sql = "SELECT * FROM TAGS " + "WHERE TASKIDS LIKE '%"+taskidString+"%' ";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
 	 
@@ -81,9 +79,8 @@ public class TagDaoImpl implements TagDao{
 		if(tagsList == null || tagsList.isEmpty()){
 			return null;
 		}
-		else{
+		
 			return tagsList;
-		}
 	}
 
 }

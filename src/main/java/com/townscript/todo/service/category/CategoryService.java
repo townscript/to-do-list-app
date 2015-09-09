@@ -3,9 +3,9 @@ package com.townscript.todo.service.category;
 import com.townscript.todo.model.Category;
 
 public interface CategoryService {
-	public int addCategory(Category category);
-	public void addExistingCategorytoTask(Category category, int taskid);
-	public void deleteCategory(int categoryid);
-	public Category readCategory(int categoryid);
-	public void changeCategoryName(int categoryid,String newCategoryName);
+	int addCategory(Category category);
+	void addExistingCategorytoTask(Category category, int taskId);
+	void deleteCategory(int categoryId);
+	Category readCategory(int categoryId);
+	void changeCategoryName(int categoryId,String newCategoryName);
 }

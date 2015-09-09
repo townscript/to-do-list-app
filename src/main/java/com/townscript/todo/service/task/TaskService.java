@@ -7,13 +7,13 @@ import com.townscript.todo.model.Tag;
 import com.townscript.todo.model.Task;
 
 public interface TaskService {
-	public int addTask(Task task);
-	public void toggleTask(int taskid,Boolean value);
-	public Task readTask(int taskid);
-	public void makeSubtaskTask(int taskid);
-	public void makeTaskSubtask(int taskid,int parentid,int sequenceNumber);
-	public List<Tag> getTagsList(int taskid);
-	public Category getCategory(int taskid);
-	public void changeTaskName(int taskid,String newTaskName);
-	public void DeleteTask(int taskid);
+	int addTask(Task task);
+	void toggleTask(int taskid,Boolean value);
+	Task readTask(int taskid);
+	void makeSubtaskTask(int taskid);
+	void makeTaskSubtask(int taskid,int parentid,int sequenceNumber);
+	List<Tag> getTagsList(int taskid);
+	Category getCategory(int taskid);
+	void changeTaskName(int taskid,String newTaskName);
+	void DeleteTask(int taskid);
 }

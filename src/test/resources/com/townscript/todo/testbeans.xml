@@ -40,6 +40,7 @@
                 <prop key="hibernate.cache.use_second_level_cache">true</prop> 
                 <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop> 
+                <prop key="net.sf.ehcache.configurationResourceName">/com/townscript/todo/ehcache.xml</prop>
 <!--                 <prop key="hibernate.cache.region.factory_class"> 
      net.sf.ehcache.hibernate.EhCacheRegionFactory</prop> -->
             </props>
@@ -99,6 +100,9 @@
         <property name="categoryService" ref="CategoryServiceImpl" />
         <property name="userService" ref="UserServiceImpl" />
     </bean>
+    <bean id="CacheTest" class="com.townscript.todo.CacheTest">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean> 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate" lazy-init="true">
               <constructor-arg>
                       <ref bean="sessionFactory" />

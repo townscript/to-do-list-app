@@ -5,9 +5,9 @@ import java.util.List;
 import com.townscript.todo.model.Task;
 
 public interface TaskDao {
-	public int addTask(Task task);
-	public Task readTask(int taskid);
-	public List<Task> readTasksofUsers(int userid);
-	public void updateTask(Task task);
-	public void removeTask(int taskid);
+	int addTask(Task task);
+	Task loadTask(int taskId);
+	List<Task> loadTasksofUsers(int userId);
+	void updateTask(Task task);
+	void removeTask(int taskId);
 }

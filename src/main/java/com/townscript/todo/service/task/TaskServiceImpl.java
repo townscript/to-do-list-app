@@ -57,71 +57,71 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public void toggleTask(int taskid, Boolean value) {
-		Task task = taskDao.readTask(taskid);
+	public void toggleTask(int taskId, Boolean value) {
+		Task task = taskDao.loadTask(taskId);
 		task.setMark(value);
 		taskDao.updateTask(task);
 	}
 
 	@Override
-	public Task readTask(int taskid) {
-		return taskDao.readTask(taskid);
+	public Task readTask(int taskId) {
+		return taskDao.loadTask(taskId);
 	}
 
 	@Override
-	public void makeSubtaskTask(int taskid) {
-		Task task = taskDao.readTask(taskid);
+	public void makeSubtaskTask(int taskId) {
+		Task task = taskDao.loadTask(taskId);
 		task.setSubtask(false);
 		task.setParentid(-1);
 		taskDao.updateTask(task);
 	}
 
 	@Override
-	public void makeTaskSubtask(int taskid, int parentid,int sequenceNumber) {
-		Task task = taskDao.readTask(taskid);
-		task.setParentid(parentid);
+	public void makeTaskSubtask(int taskId, int parentId,int sequenceNumber) {
+		Task task = taskDao.loadTask(taskId);
+		task.setParentid(parentId);
 		task.setSubtask(true);
 		task.setSequenceNumber(sequenceNumber);
 		taskDao.updateTask(task);
 	}
 
 	@Override
-	public List<Tag> getTagsList(int taskid) {
+	public List<Tag> getTagsList(int taskId) {
 		List<Tag> tagsList = new ArrayList<Tag>();
-		tagsList = tagDao.getTagsofTask(taskid);
+		tagsList = tagDao.getTagsofTask(taskId);
 		return tagsList;
 	}
 
 	@Override
-	public Category getCategory(int taskid) {
-		return categoryDao.getCategoryofTask(taskid);
+	public Category getCategory(int taskId) {
+		return categoryDao.getCategoryofTask(taskId);
 	}
 
 	@Override
-	public void changeTaskName(int taskid, String newTaskName) {
-		Task task = taskDao.readTask(taskid);
+	public void changeTaskName(int taskId, String newTaskName) {
+		Task task = taskDao.loadTask(taskId);
 		task.setTaskName(newTaskName);
 		taskDao.updateTask(task);
 		
 	}
 
 	@Override
-	public void DeleteTask(int taskid) {
-		taskDao.removeTask(taskid);
+	public void DeleteTask(int taskId) {
+		taskDao.removeTask(taskId);
 		//fetch tags of the task being removed
-		List<Tag> tagsList = tagDao.getTagsofTask(taskid);
-		String taskidString = Integer.toString(taskid);
+		List<Tag> tagsList = tagDao.getTagsofTask(taskId);
+		String taskIdString = Integer.toString(taskId);
 		if(tagsList!=null){
 		for(Tag tag : tagsList){
-			String taskids = tag.getTaskids();
+			String taskIds = tag.getTaskids();
 			//remove tag if it is associated only with the task being removed
-			if(taskidString == taskids){
+			if(taskIdString == taskIds){
 				tagDao.removeTag(tag.getId());
 			}
 			//otherwise remove the taskid of the task being removed from taskids of tag
 			else{
 				String newTaskids = "";
-			      for (String retval: taskids.split("taskid, ")){
+			      for (String retval: taskIds.split(taskIdString+ ", ")){
 			    	  newTaskids +=  retval;
 			      }
 				tag.setTaskids(newTaskids);
@@ -129,16 +129,16 @@ public class TaskServiceImpl implements TaskService{
 			}
 		}
 		}
-		Category category = categoryDao.getCategoryofTask(taskid); //fetch category of the task being removed
+		Category category = categoryDao.getCategoryofTask(taskId); //fetch category of the task being removed
 		if(category!=null){
-		String taskids = category.getTaskids();
-		if(taskidString == taskids){ //remove category if it is associated only with the task being removed
+		String taskIds = category.getTaskids();
+		if(taskIdString == taskIds){ //remove category if it is associated only with the task being removed
 			tagDao.removeTag(category.getId());
 		}
 		//otherwise remove the taskid of the task being removed from taskids of tag
 		else{
 			String newTaskids = "";
-		      for (String retval: taskids.split("taskid, ")){
+		      for (String retval: taskIds.split(taskIdString+ ", ")){
 		    	  newTaskids +=  retval;
 		      }
 			category.setTaskids(newTaskids);

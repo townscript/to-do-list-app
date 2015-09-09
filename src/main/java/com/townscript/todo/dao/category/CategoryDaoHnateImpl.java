@@ -2,13 +2,12 @@ package com.townscript.todo.dao.category;
 
 import java.util.List;
 
-import com.townscript.todo.model.Category;
-import com.townscript.todo.model.Tag;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+
+import com.townscript.todo.model.Category;
 
 @Repository
 public class CategoryDaoHnateImpl extends HibernateDaoSupport implements CategoryDao{
@@ -20,21 +19,21 @@ public class CategoryDaoHnateImpl extends HibernateDaoSupport implements Categor
 	}
 
 	@Override
-	public void removeCategory(int categoryid) {
+	public void removeCategory(int categoryId) {
 		Category category = new Category();
-		category.setId(categoryid);
+		category.setId(categoryId);
 		getHibernateTemplate().delete(category);
 		
 	}
 
 	@Override
-	public Category readCategory(int categoryid) {
+	public Category loadCategory(int categoryId) {
 		String queryString = "FROM "+ Category.class.getName() +" WHERE id = :categoryId";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(queryString);
 
-		query.setParameter("categoryId", categoryid);
+		query.setParameter("categoryId", categoryId);
 		List<Category> categoriesList = query.list();
 		return categoriesList.get(0);	
 	}
@@ -45,13 +44,13 @@ public class CategoryDaoHnateImpl extends HibernateDaoSupport implements Categor
 	}
 
 	@Override
-	public Category getCategoryofTask(int taskid) {
+	public Category getCategoryofTask(int taskId) {
 		String queryString = "FROM "+ Category.class.getName() +" WHERE taskids like :taskid";
 		
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		Query query = session.createQuery(queryString);
 
-		query.setParameter("taskid", "%"+taskid+"%");
+		query.setParameter("taskid", "%"+taskId+"%");
 		List<Category> categoriesList = query.list();
 		return categoriesList.get(0);
 	}
