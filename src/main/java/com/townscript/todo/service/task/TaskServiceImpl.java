@@ -12,6 +12,7 @@ import com.townscript.todo.model.Category;
 import com.townscript.todo.model.Tag;
 import com.townscript.todo.model.Task;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class TaskServiceImpl implements TaskService{
+	private static final Logger logger = Logger.getLogger(TaskServiceImpl.class);
 	
 	@Autowired
 	TaskDao taskDao;
@@ -61,6 +63,7 @@ public class TaskServiceImpl implements TaskService{
 		Task task = taskDao.loadTask(taskId);
 		task.setMark(value);
 		taskDao.updateTask(task);
+		logger.info("Toggled task");
 	}
 
 	@Override
@@ -102,7 +105,7 @@ public class TaskServiceImpl implements TaskService{
 		Task task = taskDao.loadTask(taskId);
 		task.setTaskName(newTaskName);
 		taskDao.updateTask(task);
-		
+		logger.info("Updated taskname");
 	}
 
 	@Override
@@ -117,6 +120,7 @@ public class TaskServiceImpl implements TaskService{
 			//remove tag if it is associated only with the task being removed
 			if(taskIdString == taskIds){
 				tagDao.removeTag(tag.getId());
+				logger.debug("removed tag - "+tag.getTagName());
 			}
 			//otherwise remove the taskid of the task being removed from taskids of tag
 			else{
@@ -125,6 +129,7 @@ public class TaskServiceImpl implements TaskService{
 			    	  newTaskids +=  retval;
 			      }
 				tag.setTaskids(newTaskids);
+				logger.debug("updated taskids attribute for - "+tag.getTagName());
 				tagDao.updateTag(tag);
 			}
 		}
@@ -133,7 +138,8 @@ public class TaskServiceImpl implements TaskService{
 		if(category!=null){
 		String taskIds = category.getTaskids();
 		if(taskIdString == taskIds){ //remove category if it is associated only with the task being removed
-			tagDao.removeTag(category.getId());
+			categoryDao.removeCategory(category.getId());
+			logger.debug("removed category - "+category.getCategoryName());
 		}
 		//otherwise remove the taskid of the task being removed from taskids of tag
 		else{
@@ -142,6 +148,7 @@ public class TaskServiceImpl implements TaskService{
 		    	  newTaskids +=  retval;
 		      }
 			category.setTaskids(newTaskids);
+			logger.debug("updated taskids attribute for - "+category.getCategoryName());
 			categoryDao.updateCategory(category);
 		}
 		}

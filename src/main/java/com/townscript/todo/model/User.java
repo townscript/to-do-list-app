@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Proxy;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Proxy(lazy=false)
 @Entity
@@ -21,15 +23,20 @@ public class User {
 	private int id;
 	
 	@Column(name = "USERNAME")
+	@NotEmpty
 	private String username;
 
 	@Column(name = "PASSWORD")
+	@NotEmpty
+	@Size(min=8,max=14)
 	private String password;
 	
 	@Column(name = "FIRSTNAME")
+	@NotEmpty
 	private String firstname;
 
 	@Column(name = "LASTNAME")
+	@NotEmpty
 	private String lastname;
 	
 	public int getId() {

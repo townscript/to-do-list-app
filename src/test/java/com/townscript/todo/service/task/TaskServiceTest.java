@@ -32,7 +32,7 @@ import com.townscript.todo.service.user.UserService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/com/townscript/todo/testbeans.xml")
 public class TaskServiceTest {
-	
+
 	@Autowired
 	private TaskService taskService;
 	@Autowired

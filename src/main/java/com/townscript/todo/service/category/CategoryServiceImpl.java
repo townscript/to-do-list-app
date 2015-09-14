@@ -1,16 +1,17 @@
 package com.townscript.todo.service.category;
 
-import com.townscript.todo.dao.category.CategoryDao;
-import com.townscript.todo.model.Category;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.townscript.todo.dao.category.CategoryDao;
+import com.townscript.todo.model.Category;
+
 @Service
 @Transactional
 public class CategoryServiceImpl implements CategoryService{
-
+	private static final Logger logger = Logger.getLogger(CategoryServiceImpl.class);
 	@Autowired
 	CategoryDao categoryDao;
 	
@@ -30,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
 	public void deleteCategory(int categoryId) {
 		categoryDao.removeCategory(categoryId);
+		logger.info("deleted category");
 	}
 
 	@Override
@@ -42,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
 		Category category = categoryDao.loadCategory(categoryId);
 		category.setCategoryName(newCategoryName);
 		categoryDao.updateCategory(category);
+		logger.info("changed category name");
 	}
 
 	@Override
@@ -50,5 +53,6 @@ public class CategoryServiceImpl implements CategoryService{
 		String taskIdString = Integer.toString(taskId);
 		category.setTaskids(taskIds+", "+taskIdString); //updating taskids of category
 		categoryDao.updateCategory(category);
+		logger.debug("updated taskids for category - "+category.getCategoryName());
 	}
 }

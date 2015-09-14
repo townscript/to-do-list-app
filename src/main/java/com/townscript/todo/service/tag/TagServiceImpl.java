@@ -1,16 +1,17 @@
 package com.townscript.todo.service.tag;
 
-import com.townscript.todo.dao.tag.TagDao;
-import com.townscript.todo.model.Tag;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.townscript.todo.dao.tag.TagDao;
+import com.townscript.todo.model.Tag;
+
 @Service
 @Transactional
 public class TagServiceImpl implements TagService{
-
+	private static final Logger logger = Logger.getLogger(TagServiceImpl.class);
 	@Autowired
 	TagDao tagDao;
 	
@@ -30,6 +31,7 @@ public class TagServiceImpl implements TagService{
 	@Override
 	public void deleteTag(int tagId) {
 		tagDao.removeTag(tagId);
+		logger.info("deleted tag");
 	}
 
 	@Override
@@ -42,6 +44,7 @@ public class TagServiceImpl implements TagService{
 		Tag tag = tagDao.loadTag(tagId);
 		tag.setTagName(newTagName);
 		tagDao.updateTag(tag);
+		logger.info("changed tag name");
 		
 	}
 
@@ -51,6 +54,7 @@ public class TagServiceImpl implements TagService{
 		String taskIdString = Integer.toString(taskId);
 		tag.setTaskids(taskIds+", "+taskIdString); //updating taskids of tag
 		tagDao.updateTag(tag);
+		logger.debug("updated taskids attribute for tag - " + tag.getTagName());
 		
 	}
 

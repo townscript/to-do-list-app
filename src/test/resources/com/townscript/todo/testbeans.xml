@@ -102,7 +102,10 @@
     </bean>
     <bean id="CacheTest" class="com.townscript.todo.CacheTest">
         <property name="sessionFactory" ref="sessionFactory" />
-    </bean> 
+    </bean>
+    <bean id="TestValidator" class="com.townscript.todo.TestValidator">
+        <property name="userService" ref="UserServiceImpl" />
+    </bean>  
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate" lazy-init="true">
               <constructor-arg>
                       <ref bean="sessionFactory" />

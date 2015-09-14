@@ -13,6 +13,7 @@ import com.townscript.todo.model.Tag;
 import com.townscript.todo.model.Task;
 import com.townscript.todo.model.User;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService{
 	
+	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 	@Autowired
 	UserDao userDao;
 	@Autowired
@@ -75,6 +77,7 @@ public class UserServiceImpl implements UserService{
 		int taskId2 = taskDao.addTask(defaultTask2);
 		String defaulttask1Id = Integer.toString(taskId1);
 		String defaulttask2Id = Integer.toString(taskId2);
+		logger.info("Added default tasks");
 		//add default tags
 		Tag defaulttag1 = new Tag();
 		Tag defaulttag2 = new Tag();
@@ -92,6 +95,7 @@ public class UserServiceImpl implements UserService{
 		tagDao.addTag(defaulttag2);
 		tagDao.addTag(defaulttag3);
 		tagDao.addTag(defaulttag4);
+		logger.info("Added default tags");
 		//add default categories
 		Category defaultCategory1 = new Category();
 		Category defaultCategory2 = new Category();
@@ -101,6 +105,7 @@ public class UserServiceImpl implements UserService{
 		defaultCategory2.setTaskids(defaulttask1Id);
 		categoryDao.addCategory(defaultCategory1);
 		categoryDao.addCategory(defaultCategory2);
+		logger.info("Added default categories");
 		return userId;
 	}
 
@@ -108,6 +113,7 @@ public class UserServiceImpl implements UserService{
 	public boolean authenticateUser(String username, String password){
 		
 			boolean returnValue = userDao.isAuthenticUser(username, password);
+			logger.info("Authentication done");
 			return returnValue;
 		
 	}
@@ -118,6 +124,7 @@ public class UserServiceImpl implements UserService{
 		User user = userDao.loadUser(userId);
 		user.setPassword(newPassword);
 		userDao.updateUser(user);
+		logger.info("Password changed for - " + user.getFirstname());
 	}
 
 	@Override
@@ -128,6 +135,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void deleteUser(int userId) {
 		userDao.deleteUser(userId);	
+		logger.info("User deleted for Id - " + userId);
 	}
 
 	@Override
@@ -142,12 +150,14 @@ public class UserServiceImpl implements UserService{
 		TreeSet<Tag> tagsList = new TreeSet<Tag>(); //use treeset to disallow duplicates and get alphabetical order of tags
 		List<Task> tasksList = taskDao.loadTasksofUsers(userId);
 		for (Task task : tasksList) {
+			logger.debug("Processing tags of task - " + task.getTaskName());
 			List<Tag> tagsListofTask = new ArrayList<Tag>();
 			tagsListofTask = tagDao.getTagsofTask(task.getId());
 			for(Tag tag : tagsListofTask){
 				tagsList.add(tag);
 			}
 		}
+		logger.info("Loaded tags");
 		return tagsList;
 	}
 
@@ -157,9 +167,11 @@ public class UserServiceImpl implements UserService{
 		TreeSet<Category> categoriesList = new TreeSet<Category>(); //use treeset to disallow duplicates and get alphabetical order of categories
 		List<Task> tasksList = taskDao.loadTasksofUsers(userId);
 		for (Task task : tasksList) {
+			logger.debug("Processing categories of task - " + task.getTaskName());
 		    Category category = categoryDao.getCategoryofTask(task.getId());
 		    categoriesList.add(category);
 		}
+		logger.info("Loaded categories");
 		return categoriesList;
 	}
 }
