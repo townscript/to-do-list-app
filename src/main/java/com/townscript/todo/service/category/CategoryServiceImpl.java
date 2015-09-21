@@ -48,11 +48,35 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public void addExistingCategorytoTask(Category category, int taskId) {
+	public void addExistingCategorytoTask(int categoryId, int taskId) {
+		Category category = categoryDao.loadCategory(categoryId);
 		String taskIds = category.getTaskids();
 		String taskIdString = Integer.toString(taskId);
 		category.setTaskids(taskIds+", "+taskIdString); //updating taskids of category
 		categoryDao.updateCategory(category);
 		logger.debug("updated taskids for category - "+category.getCategoryName());
+	}
+
+	@Override
+	public void deleteCategoryfromTask(int categoryId, int taskId) {
+		Category category = categoryDao.loadCategory(categoryId);
+		String taskIds = category.getTaskids();
+		String taskIdString = Integer.toString(taskId);
+		//remove category if it is associated only with the task 
+		if(taskIdString == taskIds){ 
+			categoryDao.removeCategory(category.getId());
+			logger.debug("removed category - "+category.getCategoryName());
+		}
+		//otherwise remove the taskid from taskids of category
+		else{
+			String newTaskids = "";
+			for (String retval: taskIds.split(", " + taskIdString)){
+				newTaskids +=  retval;
+			}
+			category.setTaskids(newTaskids);
+			logger.debug("updated taskids attribute for - "+category.getCategoryName());
+			categoryDao.updateCategory(category);
+		}
+		
 	}
 }

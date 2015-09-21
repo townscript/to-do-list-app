@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.townscript.todo.dao.JdbcTemplateFactory;
 import com.townscript.todo.model.Category;
 import com.townscript.todo.model.Tag;
+import com.townscript.todo.model.TagRowMapper;
 import com.townscript.todo.model.Task;
 import com.townscript.todo.model.TaskRowMapper;
 import com.townscript.todo.model.User;
@@ -145,8 +146,8 @@ public class TaskServiceTest {
 		int taskid = keyHolder.getKey().intValue();
 		Tag tag = new Tag();
 		tag.setTagName("test tag");
-		tag.setTaskids(Integer.toString(taskid));
-		tagService.addTag(tag);
+		tag.setTaskids("0, "+Integer.toString(taskid)); //assume tag is associated with with task id '0'
+		int tagid = tagService.addTag(tag);
 		Category category = new Category();
 		category.setCategoryName("Test");
 		category.setTaskids(Integer.toString(taskid));
@@ -155,6 +156,10 @@ public class TaskServiceTest {
 		String sqlTwo = "SELECT * FROM TASKS WHERE ID = " + taskid;
 		List<Task> tasksList = jdbcTemplate.query(sqlTwo, new TaskRowMapper());
 		Assert.assertTrue(tasksList.isEmpty());
+		//check taskids attribute of tag
+		String sqlThree = "SELECT * FROM TAGS WHERE ID = " + tagid;
+		List<Tag> tagsList = jdbcTemplate.query(sqlThree, new TagRowMapper());
+		Assert.assertEquals("0", tagsList.get(0).getTaskids());
 	}
 	
 	@Test

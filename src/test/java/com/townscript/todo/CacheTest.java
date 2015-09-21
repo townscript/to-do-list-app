@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -73,7 +72,7 @@ public class CacheTest {
 		
 		for(int x = 0; x < 2; x = x+1) {
 			long currentTime  = System.currentTimeMillis();
-			User user = (User) session.load(User.class, userId);
+			session.load(User.class, userId);
 			long afterTime = System.currentTimeMillis();
 			System.out.println("Time taken : "+ (afterTime - currentTime));
 		}
@@ -87,7 +86,7 @@ public class CacheTest {
 		System.out.println("new session opened");
 		
 		long currentTimeWith2ndLevel  = System.currentTimeMillis();
-		User user = (User) session2.load(User.class, userId);
+		session2.load(User.class, userId);
 		long afterTimeWith2ndLevel = System.currentTimeMillis();
 		System.out.println("Time taken : "+ (afterTimeWith2ndLevel - currentTimeWith2ndLevel));
 		session2.close();
@@ -103,7 +102,7 @@ public class CacheTest {
 		query.setParameter("id", 1);
 		query.setCacheable(true);
 		long currentTimeWithoutQueryCache  = System.currentTimeMillis();
-		List userList = query.list();
+		query.list();
 		long afterTimeWithoutQueryCache = System.currentTimeMillis();
 		System.out.println("Time taken : "+ (afterTimeWithoutQueryCache - currentTimeWithoutQueryCache));
 
@@ -111,7 +110,7 @@ public class CacheTest {
 		query2.setParameter("id", 1);
 		query2.setCacheable(true);
 		long currentTimeWithQueryCache  = System.currentTimeMillis();
-		List userList2 = query2.list();
+		query2.list();
 		long afterTimeWithQueryCache = System.currentTimeMillis();
 		System.out.println("Time taken : "+ (afterTimeWithQueryCache - currentTimeWithQueryCache));
 	}

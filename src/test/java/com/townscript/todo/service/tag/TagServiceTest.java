@@ -92,6 +92,26 @@ public class TagServiceTest {
 	}
 	
 	@Test
+	public void testDeleteTagfromTask(){
+		final String sql = "insert into TAGS(ID,TAG_NAME,TASKIDS) VALUES (0, 'testjames','1, 802')";
+		 
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(
+		  new PreparedStatementCreator() {
+			    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+			      return connection.prepareStatement(sql,  Statement.RETURN_GENERATED_KEYS);
+			    }
+			  }, keyHolder);
+
+		int tagid  =  keyHolder.getKey().intValue();
+		tagService.deleteTagfromTask(tagid, 802); //assume taskid is 802
+		String sqlTwo = "SELECT * from TAGS WHERE ID = "+tagid;
+		List<Tag> tagsList = jdbcTemplate.query(sqlTwo, new TagRowMapper());
+		Assert.assertEquals("1",tagsList.get(0).getTaskids());
+	}
+	
+	@Test
 	public void testReadTag(){
 		final String sql = "insert into TAGS(ID,TAG_NAME,TASKIDS) VALUES (0, 'testjames','1')";;
 		 
@@ -160,9 +180,9 @@ public class TagServiceTest {
 			  }, keyHolderTag);
 
 		int tagid  =  keyHolderTag.getKey().intValue();
+		tagService.addExistingTagtoTask(tagid, taskid); //add tag to the task
 		String sqlTwo = "SELECT * from TAGS WHERE ID = "+tagid;
 		List<Tag> tagsList = jdbcTemplate.query(sqlTwo, new TagRowMapper());
-		tagService.addExistingTagtoTask(tagsList.get(0), taskid); //add tag to the task
 		Assert.assertEquals("1, "+ Integer.toString(taskid),tagsList.get(0).getTaskids());
 		String sqlThree = "DELETE FROM TASKS";
 		String sqlFour = "DELETE FROM USER";

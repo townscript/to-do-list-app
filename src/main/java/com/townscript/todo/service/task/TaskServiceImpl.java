@@ -21,14 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TaskServiceImpl implements TaskService{
 	private static final Logger logger = Logger.getLogger(TaskServiceImpl.class);
-	
+
 	@Autowired
 	TaskDao taskDao;
 	@Autowired
 	TagDao tagDao;
 	@Autowired
 	CategoryDao categoryDao;
-	
+
 	public TaskDao getTaskDao() {
 		return taskDao;
 	}
@@ -52,7 +52,7 @@ public class TaskServiceImpl implements TaskService{
 	public void setCategoryDao(CategoryDao categoryDao) {
 		this.categoryDao = categoryDao;
 	}
-	
+
 	@Override
 	public int addTask(Task task) {
 		return taskDao.addTask(task);
@@ -115,42 +115,42 @@ public class TaskServiceImpl implements TaskService{
 		List<Tag> tagsList = tagDao.getTagsofTask(taskId);
 		String taskIdString = Integer.toString(taskId);
 		if(tagsList!=null){
-		for(Tag tag : tagsList){
-			String taskIds = tag.getTaskids();
-			//remove tag if it is associated only with the task being removed
-			if(taskIdString == taskIds){
-				tagDao.removeTag(tag.getId());
-				logger.debug("removed tag - "+tag.getTagName());
+			for(Tag tag : tagsList){
+				String taskIds = tag.getTaskids();
+				//remove tag if it is associated only with the task being removed
+				if(taskIdString == taskIds){
+					tagDao.removeTag(tag.getId());
+					logger.debug("removed tag - "+tag.getTagName());
+				}
+				//otherwise remove the taskid of the task being removed from taskids of tag
+				else{
+					String newTaskids = "";
+					for (String retval: taskIds.split(", " + taskIdString)){
+						newTaskids +=  retval;
+					}
+					tag.setTaskids(newTaskids);
+					logger.debug("updated taskids attribute for - "+tag.getTagName());
+					tagDao.updateTag(tag);
+				}
 			}
-			//otherwise remove the taskid of the task being removed from taskids of tag
-			else{
-				String newTaskids = "";
-			      for (String retval: taskIds.split(taskIdString+ ", ")){
-			    	  newTaskids +=  retval;
-			      }
-				tag.setTaskids(newTaskids);
-				logger.debug("updated taskids attribute for - "+tag.getTagName());
-				tagDao.updateTag(tag);
-			}
-		}
 		}
 		Category category = categoryDao.getCategoryofTask(taskId); //fetch category of the task being removed
 		if(category!=null){
-		String taskIds = category.getTaskids();
-		if(taskIdString == taskIds){ //remove category if it is associated only with the task being removed
-			categoryDao.removeCategory(category.getId());
-			logger.debug("removed category - "+category.getCategoryName());
-		}
-		//otherwise remove the taskid of the task being removed from taskids of tag
-		else{
-			String newTaskids = "";
-		      for (String retval: taskIds.split(taskIdString+ ", ")){
-		    	  newTaskids +=  retval;
-		      }
-			category.setTaskids(newTaskids);
-			logger.debug("updated taskids attribute for - "+category.getCategoryName());
-			categoryDao.updateCategory(category);
-		}
+			String taskIds = category.getTaskids();
+			if(taskIdString == taskIds){ //remove category if it is associated only with the task being removed
+				categoryDao.removeCategory(category.getId());
+				logger.debug("removed category - "+category.getCategoryName());
+			}
+			//otherwise remove the taskid of the task being removed from taskids of category
+			else{
+				String newTaskids = "";
+				for (String retval: taskIds.split(", " + taskIdString)){
+					newTaskids +=  retval;
+				}
+				category.setTaskids(newTaskids);
+				logger.debug("updated taskids attribute for - "+category.getCategoryName());
+				categoryDao.updateCategory(category);
+			}
 		}
 	}
 }

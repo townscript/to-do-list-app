@@ -88,6 +88,25 @@ public class CategoryServiceTest {
 	}
 	
 	@Test
+	public void testDeleteCategoryfromTask(){
+		final String sql = "insert into CATEGORIES(ID,CATEGORY_NAME,TASKIDS) VALUES (0,'007','1, 802')";
+		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(
+		  new PreparedStatementCreator() {
+			    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+			      return connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			    }
+			  }, keyHolder);
+
+		int categoryid =  keyHolder.getKey().intValue();
+		categoryService.deleteCategoryfromTask(categoryid,802);
+		String sqlTwo= "SELECT * from CATEGORIES WHERE ID = "+ categoryid;
+		List<Category> categoriesList = jdbcTemplate.query(sqlTwo, new CategoryRowMapper());
+		Assert.assertEquals("1",categoriesList.get(0).getTaskids());
+	}
+	
+	@Test
 	public void testReadCategory(){
 		final String sql = "insert into CATEGORIES(ID,CATEGORY_NAME,TASKIDS) VALUES (0,'007','1')";
 		JdbcTemplate jdbcTemplate = JdbcTemplateFactory.getJdbcTemplate();
@@ -154,9 +173,9 @@ public class CategoryServiceTest {
 			  }, keyHolderTwo);
 
 		int categoryid =  keyHolderTwo.getKey().intValue();
+		categoryService.addExistingCategorytoTask(categoryid, taskid);
 		String sqlThree = "SELECT * FROM CATEGORIES WHERE ID = "+categoryid;
 		List<Category> categoriesList = jdbcTemplate.query(sqlThree, new CategoryRowMapper());
-		categoryService.addExistingCategorytoTask(categoriesList.get(0), taskid);
 		Assert.assertEquals("1, "+Integer.toString(taskid), categoriesList.get(0).getTaskids());
 		String sqlFour = "DELETE FROM TASKS";
 		String sqlFive = "DELETE FROM USER";
