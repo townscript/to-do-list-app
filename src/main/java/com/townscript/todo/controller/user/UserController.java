@@ -22,9 +22,24 @@ import com.townscript.todo.service.user.UserService;
 
 @RestController
 @RequestMapping("/user")
+//@ContextConfiguration(locations="/com/townscript/todo/testContext.xml")
 public class UserController {
 
 	private UserService userService;
+	
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	//@Autowired
+	public UserController(UserService userService) {
+		this.userService = userService;
+	};
+	
 	public UserController() {
 
 		if (userService == null) {
@@ -33,6 +48,7 @@ public class UserController {
 			userService = (UserService) context
 					.getBean("UserServiceImpl");
 		}
+		
 	};
 	
 	@Secured("ROLE_ADMIN")
